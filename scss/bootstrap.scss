@@ -24,4 +24,100 @@ $link-decoration: none;
 
 $enable-negative-margins: true;
 
+
+
+/* Ajusta el botón para estar más arriba */
+.fixed-bottom {
+    position: fixed;
+    bottom: 260px; /* Mover el botón más arriba ajustando este valor */
+    right: 1665px;
+    z-index: 1050; /* Asegura que el botón se muestra encima de otros elementos */
+}
+
+.whatsapp-btn {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 15px;
+}
+
+.whatsapp-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+}
+
+/* Estilo general para el contenedor de WhatsApp */
+.whatsapp-btn {
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+}
+
+.whatsapp-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+}
+
+/* Contenedor del ícono y el texto */
+.whatsapp-icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.whatsapp-icon-container i {
+    font-size: 30px;
+    color: #fff;
+    margin-right: 10px; /* Espacio entre ícono y texto */
+}
+
+/* Estilo del texto sobre el botón */
+.whatsapp-text {
+    position: absolute;
+    top: -35px;  /* Eleva el texto sobre el ícono */
+    font-size: 16px;  /* Ajustar tamaño de letra */
+    color: #fff;
+    font-weight: bold;
+    transform: scale(0.9);
+    opacity: 0.8;
+    transition: transform 0.3s ease, opacity 0.3s ease, font-size 0.3s ease;
+}
+
+/* Efecto al pasar el ratón: texto más visible y tamaño ajustado */
+.whatsapp-btn:hover .whatsapp-text {
+    transform: scale(1);
+    opacity: 1;
+    font-size: 18px;  /* Incrementa el tamaño del texto cuando se pasa el ratón */
+}
+
+/* Emoji con cambio de expresión */
+.whatsapp-emoji {
+    font-size: 30px; /* Tamaño del emoji */
+    margin-left: 10px; /* Espacio entre texto y emoji */
+    transition: transform 0.3s ease, font-size 0.3s ease;
+}
+
+/* Cambio de expresión al acercarse el ratón */
+.whatsapp-btn:hover .whatsapp-emoji {
+    transform: scale(1.2);  /* Hace que el emoji se agrande */
+    font-size: 35px;  /* Aumenta el tamaño del emoji al pasar el ratón */
+    content: "😊"; /* Cambia el emoji a feliz */
+}
+
+/* Agregar margen inferior al contenedor de WhatsApp */
+.fixed-bottom {
+    z-index: 1050; /* Asegura que el botón se muestra encima de otros elementos */
+}
+
+/* Ajustar el tamaño y forma del botón */
+.fixed-bottom .whatsapp-btn {
+    position: fixed;
+    bottom: 80px; /* Deja espacio para otros botones si los hay */
+    border-radius: 50%;
+    background-color: #25D366; /* Fondo verde WhatsApp */
+}
+
+
 @import "bootstrap/scss/bootstrap";
