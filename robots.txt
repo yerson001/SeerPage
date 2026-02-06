@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+Allow: /index.html
+Allow: /about.html
+Allow: /service.html
+Allow: /project.html
+Allow: /contact.html
+Allow: /feature.html
+Allow: /team.html
+Allow: /testimonial.html
+
+# Disallow private/internal tools
+Disallow: /login.html
+Disallow: /quotation.html
+
+Sitemap: https://seer.pe/sitemap.xml
