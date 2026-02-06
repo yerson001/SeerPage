@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <title>Seer - Generador de Cotizaciones</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="img/favicon.ico" rel="icon">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <style>
+        :root {
+            --seer-green: #32CD32;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .editor-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Print Layout Styles (matches the provided image) */
+        #print-area {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 15mm;
+            margin: 2rem auto;
+            background: white;
+            color: black;
+            font-size: 11pt;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            /* Shown by default in UI as live preview */
+        }
+
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .company-info img {
+            max-width: 200px;
+        }
+
+        .ruc-box {
+            border: 2px solid #000;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            width: 280px;
+        }
+
+        .ruc-box h4 {
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .client-info-box {
+            border: 1.5px solid #000;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .table-invoice {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .table-invoice th,
+        .table-invoice td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .table-invoice th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        /* Zebra striping for items */
+        .table-invoice tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .footer-totals {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .totals-table {
+            width: 300px;
+            border: 1px solid #000;
+        }
+
+        .totals-table td {
+            padding: 5px;
+            border: 1px solid #000;
+        }
+
+        .bank-accounts {
+            margin-top: 20px;
+            border: 2px solid #000;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .bank-accounts table {
+            width: 100%;
+            text-align: center;
+            border-collapse: collapse;
+        }
+
+        .bank-accounts th {
+            background-color: #d1ecf1;
+            /* Professional light blue */
+            padding: 10px;
+            border: 1px solid #000;
+            color: #0c5460;
+            font-size: 10pt;
+        }
+
+        .bank-accounts td {
+            padding: 8px;
+            border: 1px solid #000;
+            font-weight: bold;
+        }
+
+        @media print {
+            body {
+                background: white !important;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            #print-area {
+                box-shadow: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                width: 100% !important;
+                display: block !important;
+                visibility: visible !important;
+            }
+
+            #print-area * {
+                visibility: visible !important;
+            }
+
+            /* Ensure background colors print */
+            .table-invoice th,
+            .bank-accounts th {
+                background-color: #d1ecf1 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .table-invoice tbody tr:nth-child(even) {
+                background-color: #f9f9f9 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+
+        .item-row:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Active ID Badge and Status Badges */
+        .active-id-badge {
+            background-color: var(--primary);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-left: 10px;
+        }
+
+        .status-saved {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-dirty {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+
+        /* History Side Panel (New) */
+        .history-section {
+            background: #fff;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            margin-top: 2rem;
+        }
+
+        .history-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 4px solid transparent;
+        }
+
+        .history-item:hover {
+            background-color: #f8f9fa;
+            border-left-color: var(--primary);
+        }
+
+        .history-item.active {
+            background-color: #e9ecef;
+            border-left-color: var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar logic (Simple check) -->
+    <script>
+        if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+    </script>
+
+    <div class="no-print pb-5">
+        <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0">
+            <a href="index.html" class="navbar-brand d-flex align-items-center border-end px-4 px-lg-5">
+                <h2 class="m-0 text-primary">Seer - Admin</h2>
+            </a>
+            <div class="ms-auto p-4">
+                <button onclick="logout()" class="btn btn-outline-danger btn-sm">Cerrar Sesión</button>
+            </div>
+        </nav>
+
+        <div class="editor-container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="m-0">Generador de Cotizaciones</h3>
+                <div id="active-state-display">
+                    <span class="active-id-badge" id="current-id-display">SIN GUARDAR</span>
+                    <span class="status-badge status-dirty" id="save-status-display">Borrador</span>
+                </div>
+            </div>
+
+            <div class="card p-4 mb-4">
+                <h5>Configuración de Empresa (Mis Datos)</h5>
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label>Mi R.U.C.</label>
+                        <input type="text" id="input-my-ruc" class="form-control" value="2061376524"
+                            oninput="updatePrint()">
+                    </div>
+                    <div class="col-md-6">
+                        <label>Mi Dirección</label>
+                        <input type="text" id="input-my-address" class="form-control"
+                            value="San Román Juliaca, Puno, Perú" oninput="updatePrint()">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Mi Teléfono</label>
+                        <input type="text" id="input-my-phone" class="form-control" value="+51 986 366 440"
+                            oninput="updatePrint()">
+                    </div>
+                    <div class="col-md-6">
+                        <label>Cuenta Bancaria (Soles)</label>
+                        <input type="text" id="input-my-bank" class="form-control" value="322-3007459369"
+                            oninput="updatePrint()">
+                    </div>
+                    <div class="col-md-6">
+                        <label>CCI</label>
+                        <input type="text" id="input-my-cci" class="form-control" value="003-322-003007459369-57"
+                            oninput="updatePrint()">
+                    </div>
+                </div>
+            </div>
+
+            <div class="card p-4 mb-4">
+                <h5>Datos del Cliente</h5>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label>Cliente / Razón Social</label>
+                        <input type="text" id="input-cliente" class="form-control" placeholder="Nombre completo"
+                            oninput="updatePrint()">
+                    </div>
+                    <div class="col-md-3">
+                        <label>R.U.C.</label>
+                        <input type="text" id="input-ruc" class="form-control" placeholder="20XXXXXXXXX"
+                            oninput="updatePrint()">
+                    </div>
+                    <div class="col-md-3">
+                        <label>Fecha</label>
+                        <input type="date" id="input-fecha" class="form-control" oninput="updatePrint()">
+                    </div>
+                    <div class="col-md-6">
+                        <label>Dirección</label>
+                        <input type="text" id="input-direccion" class="form-control" placeholder="Dirección del cliente"
+                            oninput="updatePrint()">
+                    </div>
+                </div>
+            </div>
+
+            <div class="card p-4 mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5>Ítems</h5>
+                    <button class="btn btn-success btn-sm" onclick="addRow()">+ Agregar Ítem</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="items-table">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Cant.</th>
+                                <th>U/M</th>
+                                <th>Descripción</th>
+                                <th>P. Unitario</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="items-body">
+                            <!-- Rows will be added here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="text-end mb-4 d-flex justify-content-between align-items-center">
+                <div>
+                    <button class="btn btn-outline-secondary px-4 me-2" onclick="newQuotation()">
+                        <i class="fa fa-plus me-2"></i>Nueva
+                    </button>
+                    <button class="btn btn-success px-4" id="save-btn" onclick="saveQuotation()">
+                        <i class="fa fa-save me-2"></i>Guardar Cambios
+                    </button>
+                </div>
+                <div>
+                    <button class="btn btn-outline-primary px-3 me-2" onclick="downloadCurrentJSON()">
+                        <i class="fa fa-file-code me-2"></i>Descargar JSON
+                    </button>
+                    <button class="btn btn-primary btn-lg px-5 shadow-sm" onclick="triggerPrint()">
+                        <i class="fa fa-print me-2"></i>Imprimir / PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="editor-container history-section">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="m-0"><i class="fa fa-history me-2"></i>Historial de Cotizaciones</h5>
+                <div>
+                    <button class="btn btn-sm btn-outline-primary me-2" onclick="exportHistory()">
+                        <i class="fa fa-download me-1"></i>Exportar JSON
+                    </button>
+                    <label class="btn btn-sm btn-outline-info m-0" for="import-json">
+                        <i class="fa fa-upload me-1"></i>Importar JSON
+                    </label>
+                    <input type="file" id="import-json" class="d-none" accept=".json" onchange="importHistory(this)">
+                </div>
+            </div>
+            <div class="history-list list-group list-group-flush" id="history-container">
+                <p class="text-muted text-center py-4">No hay cotizaciones guardadas aún.</p>
+            </div>
+        </div>
+
+        <div class="container text-center mb-4">
+            <h4 class="text-muted"><i class="fa fa-eye me-2"></i>Vista Previa en Tiempo Real</h4>
+            <p class="small">Lo que ves abajo es exactamente lo que se imprimirá.</p>
+        </div>
+    </div>
+
+    <!-- Print Area (Hidden in UI, Shown in Print) -->
+    <div id="print-area">
+        <div class="invoice-header">
+            <div class="company-logo-area d-flex align-items-center">
+                <img src="img/logo.png" style="width: 100px; height: auto;" alt="Logo"
+                    onerror="this.src='https://via.placeholder.com/80?text=Seer'">
+                <div class="ms-4">
+                    <h2 class="m-0 text-primary fw-bold" style="letter-spacing: 1px;">SEER</h2>
+                    <div style="font-size: 0.95rem; line-height: 1.3;">
+                        <strong class="text-dark">Soluciones para la renovación ambiental y energética
+                            E.I.R.L.</strong><br>
+                        <span id="print-my-address" class="text-muted">San Román Juliaca, Puno, Perú</span><br>
+                        <span class="text-muted">TELF: <span id="print-my-phone">+51 986 366 440</span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="ruc-box">
+                <h5>R.U.C. <span id="print-my-ruc">2061376524</span></h5>
+                <h4 class="bg-light py-2 my-2 border-top border-bottom">COTIZACIÓN</h4>
+                <h5>Nº: C001-<span id="print-number">57</span></h5>
+            </div>
+        </div>
+
+        <div class="client-info-box">
+            <table style="width: 100%;">
+                <tr>
+                    <td style="width: 15%;"><strong>Cliente</strong></td>
+                    <td style="width: 50%;">: <span id="print-cliente"></span></td>
+                    <td style="width: 15%;"><strong>Moneda</strong></td>
+                    <td>: SOLES</td>
+                </tr>
+                <tr>
+                    <td><strong>R.U.C.</strong></td>
+                    <td>: <span id="print-ruc"></span></td>
+                    <td><strong>Fecha</strong></td>
+                    <td>: <span id="print-fecha"></span></td>
+                </tr>
+                <tr>
+                    <td><strong>Dirección</strong></td>
+                    <td>: <span id="print-direccion"></span></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+
+        <table class="table-invoice">
+            <thead>
+                <tr>
+                    <th style="width: 10%;">Cant.</th>
+                    <th style="width: 10%;">U/M</th>
+                    <th style="width: 55%;">Descripción</th>
+                    <th style="width: 12%;">P. Unitario</th>
+                    <th style="width: 13%;">Importe Total</th>
+                </tr>
+            </thead>
+            <tbody id="print-items-body">
+                <!-- Items inserted here -->
+            </tbody>
+        </table>
+
+        <div class="d-flex justify-content-between">
+            <div style="width: 50%;">
+                <div class="border p-2 rounded mb-2">
+                    <strong>Información adicional:</strong><br>
+                    <small>Cuentas bancarias habilitadas para transferencias.</small>
+                </div>
+                <div>
+                    <strong>SON:</strong> <span id="print-total-words" style="text-transform: uppercase;"></span>
+                </div>
+            </div>
+            <div style="width: 40%;">
+                <table class="totals-table w-100">
+                    <tr>
+                        <td>Venta Gravada</td>
+                        <td class="text-end">S/ <span id="print-subtotal">0.00</span></td>
+                    </tr>
+                    <tr>
+                        <td>Total I.G.V. (18%)</td>
+                        <td class="text-end">S/ <span id="print-igv">0.00</span></td>
+                    </tr>
+                    <tr class="fw-bold bg-light">
+                        <td>Total Precio Venta</td>
+                        <td class="text-end">S/ <span id="print-total">0.00</span></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="bank-accounts">
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="4">"SIRVASE ABONAR EN NUESTRAS CUENTAS"</th>
+                    </tr>
+                    <tr>
+                        <th>BANCO</th>
+                        <th>MONEDA</th>
+                        <th>CUENTA</th>
+                        <th>CCI</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>INTERBANK</td>
+                        <td>SOLES</td>
+                        <td><span id="print-my-bank">322-3007459369</span></td>
+                        <td><span id="print-my-cci">003-322-003007459369-57</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="text-center mt-3">
+            <strong>"GRACIAS POR SU PREFERENCIA"</strong>
+        </div>
+    </div>
+
+    <script>
+        function logout() {
+            sessionStorage.clear();
+            window.location.href = 'login.html';
+        }
+
+        function triggerPrint() {
+            // Force a small delay to ensure any pending UI updates are settled
+            setTimeout(() => {
+                window.print();
+            }, 100);
+        }
+
+        // --- STORAGE LOGIC ---
+        let currentQuotationId = null;
+        let isDirty = false;
+
+        function setStatus(id, dirty) {
+            currentQuotationId = id;
+            isDirty = dirty;
+
+            const idBadge = document.getElementById('current-id-display');
+            const statusBadge = document.getElementById('save-status-display');
+
+            if (id) {
+                idBadge.innerText = `COTIZACIÓN: ${id}`;
+                idBadge.classList.replace('bg-secondary', 'bg-primary');
+            } else {
+                idBadge.innerText = 'NUEVA (SIN GUARDAR)';
+                idBadge.classList.add('bg-secondary');
+            }
+
+            if (dirty) {
+                statusBadge.innerText = 'Borrador (Sin guardar)';
+                statusBadge.className = 'status-badge status-dirty';
+            } else {
+                statusBadge.innerText = 'Guardado Localmente';
+                statusBadge.className = 'status-badge status-saved';
+            }
+        }
+
+        function saveQuotation() {
+            const history = JSON.parse(localStorage.getItem('seer_history') || '[]');
+            const quotationData = {
+                id: currentQuotationId || `C${String(history.length + 1).padStart(3, '0')}`,
+                dateCreated: new Date().toISOString(),
+                company: {
+                    ruc: document.getElementById('input-my-ruc').value,
+                    address: document.getElementById('input-my-address').value,
+                    phone: document.getElementById('input-my-phone').value,
+                    bank: document.getElementById('input-my-bank').value,
+                    cci: document.getElementById('input-my-cci').value
+                },
+                client: {
+                    name: document.getElementById('input-cliente').value,
+                    ruc: document.getElementById('input-ruc').value,
+                    date: document.getElementById('input-fecha').value,
+                    address: document.getElementById('input-direccion').value
+                },
+                items: Array.from(document.querySelectorAll('.item-row')).map(row => ({
+                    q: row.querySelector('.q-input').value,
+                    unit: row.querySelector('.unit-input').value,
+                    desc: row.querySelector('.desc-input').value,
+                    price: row.querySelector('.price-input').value
+                }))
+            };
+
+            if (currentQuotationId) {
+                const index = history.findIndex(q => q.id === currentQuotationId);
+                if (index !== -1) history[index] = quotationData;
+                else history.push(quotationData);
+            } else {
+                history.push(quotationData);
+                currentQuotationId = quotationData.id;
+            }
+
+            localStorage.setItem('seer_history', JSON.stringify(history));
+            setStatus(currentQuotationId, false);
+            document.getElementById('print-number').innerText = currentQuotationId.replace('C', '');
+            renderHistory();
+            alert('Cotización guardada exitosamente.');
+        }
+
+        function renderHistory() {
+            const history = JSON.parse(localStorage.getItem('seer_history') || '[]');
+            const container = document.getElementById('history-container');
+            container.innerHTML = '';
+
+            if (history.length === 0) {
+                container.innerHTML = '<p class="text-muted text-center py-4">No hay cotizaciones guardadas aún.</p>';
+                return;
+            }
+
+            history.sort((a, b) => new Date(b.dateCreated) - new Date(a.dateCreated)).forEach(item => {
+                const div = document.createElement('div');
+                div.className = `list-group-item history-item d-flex justify-content-between align-items-center ${currentQuotationId === item.id ? 'active' : ''}`;
+                div.onclick = (e) => {
+                    if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'I') {
+                        loadQuotation(item.id);
+                    }
+                };
+                div.innerHTML = `
+                    <div>
+                        <strong class="text-primary">${item.id}</strong> - 
+                        <span>${item.client.name || 'Sin nombre'}</span>
+                        <br><small class="text-muted">${new Date(item.dateCreated).toLocaleDateString()}</small>
+                    </div>
+                    <div>
+                        <button class="btn btn-sm btn-link text-danger" onclick="deleteHistoryItem('${item.id}')">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function loadQuotation(id) {
+            const history = JSON.parse(localStorage.getItem('seer_history') || '[]');
+            const data = history.find(q => q.id === id);
+            if (!data) return;
+
+            // Load company info
+            document.getElementById('input-my-ruc').value = data.company.ruc;
+            document.getElementById('input-my-address').value = data.company.address;
+            document.getElementById('input-my-phone').value = data.company.phone;
+            document.getElementById('input-my-bank').value = data.company.bank;
+            document.getElementById('input-my-cci').value = data.company.cci;
+
+            // Load client info
+            document.getElementById('input-cliente').value = data.client.name;
+            document.getElementById('input-ruc').value = data.client.ruc;
+            document.getElementById('input-fecha').value = data.client.date;
+            document.getElementById('input-direccion').value = data.client.address;
+
+            // Load items
+            const tbody = document.getElementById('items-body');
+            tbody.innerHTML = '';
+            data.items.forEach(item => {
+                const row = document.createElement('tr');
+                row.className = 'item-row';
+                row.innerHTML = `
+                    <td><input type="number" class="form-control q-input" step="1" value="${item.q}" oninput="updatePrint()"></td>
+                    <td><input type="text" class="form-control unit-input" value="${item.unit}" oninput="updatePrint()"></td>
+                    <td><input type="text" class="form-control desc-input" value="${item.desc}" oninput="updatePrint()"></td>
+                    <td><input type="number" class="form-control price-input" step="0.01" value="${item.price}" oninput="updatePrint()"></td>
+                    <td class="text-center"><button class="btn btn-danger btn-sm" onclick="this.closest('tr').remove(); updatePrint();">x</button></td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            document.getElementById('print-number').innerText = id.replace('C', '');
+            updatePrint();
+            setStatus(id, false);
+            renderHistory();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function newQuotation() {
+            if (isDirty && !confirm('Tienes cambios sin guardar. ¿Deseas continuar?')) return;
+
+            if (confirm('¿Desea crear una nueva cotización? Se limpiarán los campos actuales.')) {
+                document.getElementById('input-cliente').value = '';
+                document.getElementById('input-ruc').value = '';
+                document.getElementById('input-direccion').value = '';
+                document.getElementById('input-fecha').valueAsDate = new Date();
+                document.getElementById('items-body').innerHTML = '';
+                document.getElementById('print-number').innerText = '---';
+                addRow();
+                updatePrint();
+                setStatus(null, true);
+                renderHistory();
+            }
+        }
+
+        function deleteHistoryItem(id) {
+            if (confirm(`¿Está seguro de eliminar la cotización ${id}?`)) {
+                const history = JSON.parse(localStorage.getItem('seer_history') || '[]');
+                const newHistory = history.filter(q => q.id !== id);
+                localStorage.setItem('seer_history', JSON.stringify(newHistory));
+                if (currentQuotationId === id) setStatus(null, true);
+                renderHistory();
+            }
+        }
+
+        function downloadCurrentJSON() {
+            const data = {
+                id: currentQuotationId || 'Draft',
+                dateCreated: new Date().toISOString(),
+                company: {
+                    ruc: document.getElementById('input-my-ruc').value,
+                    address: document.getElementById('input-my-address').value,
+                    phone: document.getElementById('input-my-phone').value,
+                    bank: document.getElementById('input-my-bank').value,
+                    cci: document.getElementById('input-my-cci').value
+                },
+                client: {
+                    name: document.getElementById('input-cliente').value,
+                    ruc: document.getElementById('input-ruc').value,
+                    date: document.getElementById('input-fecha').value,
+                    address: document.getElementById('input-direccion').value
+                },
+                items: Array.from(document.querySelectorAll('.item-row')).map(row => ({
+                    q: row.querySelector('.q-input').value,
+                    unit: row.querySelector('.unit-input').value,
+                    desc: row.querySelector('.desc-input').value,
+                    price: row.querySelector('.price-input').value
+                }))
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `cotizacion_${data.id}_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function exportHistory() {
+            const history = localStorage.getItem('seer_history') || '[]';
+            const blob = new Blob([history], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `seer_cotizaciones_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importHistory(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                try {
+                    const history = JSON.parse(e.target.result);
+                    if (confirm('¿Desea importar estas cotizaciones? Esto reemplazará su historial actual.')) {
+                        localStorage.setItem('seer_history', JSON.stringify(history));
+                        renderHistory();
+                        alert('Historial importado correctamente.');
+                    }
+                } catch (err) {
+                    alert('Error al leer el archivo JSON.');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // --- END STORAGE LOGIC ---
+
+        function addRow() {
+            const tbody = document.getElementById('items-body');
+            const row = document.createElement('tr');
+            row.className = 'item-row';
+            row.innerHTML = `
+                <td><input type="number" class="form-control q-input" step="1" value="1" oninput="updatePrint()"></td>
+                <td><input type="text" class="form-control unit-input" value="UNID." oninput="updatePrint()"></td>
+                <td><input type="text" class="form-control desc-input" placeholder="Descripción del producto" oninput="updatePrint()"></td>
+                <td><input type="number" class="form-control price-input" step="0.01" value="0.00" oninput="updatePrint()"></td>
+                <td class="text-center"><button class="btn btn-danger btn-sm" onclick="this.closest('tr').remove(); updatePrint();">x</button></td>
+            `;
+            tbody.appendChild(row);
+            updatePrint();
+        }
+
+        function updatePrint() {
+            // Mark as dirty when changes occur (if not already dirty)
+            if (!isDirty && document.readyState === 'complete') {
+                setStatus(currentQuotationId, true);
+            }
+
+            // Sync company info
+            document.getElementById('print-my-ruc').innerText = document.getElementById('input-my-ruc').value;
+            document.getElementById('print-my-address').innerText = document.getElementById('input-my-address').value;
+            document.getElementById('print-my-phone').innerText = document.getElementById('input-my-phone').value;
+            document.getElementById('print-my-bank').innerText = document.getElementById('input-my-bank').value;
+            document.getElementById('print-my-cci').innerText = document.getElementById('input-my-cci').value;
+
+            // Sync values from editor inputs to print view
+            document.getElementById('print-cliente').innerText = document.getElementById('input-cliente').value;
+            document.getElementById('print-ruc').innerText = document.getElementById('input-ruc').value;
+            document.getElementById('print-fecha').innerText = document.getElementById('input-fecha').value;
+            document.getElementById('print-direccion').innerText = document.getElementById('input-direccion').value;
+
+            // Sync items
+            const rows = document.querySelectorAll('.item-row');
+            const printTbody = document.getElementById('print-items-body');
+            printTbody.innerHTML = '';
+
+            let total = 0;
+            rows.forEach(row => {
+                const q = parseFloat(row.querySelector('.q-input').value) || 0;
+                const unit = row.querySelector('.unit-input').value;
+                const desc = row.querySelector('.desc-input').value;
+                const price = parseFloat(row.querySelector('.price-input').value) || 0;
+                const sub = q * price;
+                total += sub;
+
+                if (desc) { // Only add to print if has description
+                    const pRow = document.createElement('tr');
+                    pRow.innerHTML = `
+                        <td>${q.toFixed(0)}</td>
+                        <td>${unit}</td>
+                        <td class="text-start">${desc}</td>
+                        <td>${price.toFixed(2)}</td>
+                        <td>${sub.toFixed(2)}</td>
+                    `;
+                    printTbody.appendChild(pRow);
+                }
+            });
+
+            const igv = total * 0.18;
+            const gravada = total / 1.18; // Traditional calculation: Total includes IGV
+            // Actually usually Price is Unitary + IGV or Subtotal + IGV. 
+            // In the image: Venta Gravada + IGV = Total.
+            // Let's assume input price is WITHOUT IGV for simplicity in this calculation.
+
+            const totalIGV = total * 0.18;
+            const totalFinal = total + totalIGV;
+
+            document.getElementById('print-subtotal').innerText = total.toFixed(2);
+            document.getElementById('print-igv').innerText = totalIGV.toFixed(2);
+            document.getElementById('print-total').innerText = totalFinal.toFixed(2);
+
+            // Decimal to words (Simplified)
+            document.getElementById('print-total-words').innerText = numberToSpanish(totalFinal);
+        }
+
+        // Add 1 default row
+        addRow();
+
+        // Set today's date
+        document.getElementById('input-fecha').valueAsDate = new Date();
+
+        // Initial render
+        renderHistory();
+
+        function numberToSpanish(n) {
+            // Simplified version for the demo
+            return n.toLocaleString('es-PE', { minimumFractionDigits: 2 }) + " SOLES";
+        }
+    </script>
+</body>
+
+</html>
