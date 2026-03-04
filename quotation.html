@@ -382,6 +382,14 @@
         }
 
         @media print {
+            @page {
+                margin: 0;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+            }
 
             /* Forced Backgrounds */
             .table-invoice th,
@@ -453,6 +461,13 @@
             img {
                 max-width: 100% !important;
                 page-break-inside: avoid;
+            }
+
+            .print-footer {
+                display: block !important;
+                position: relative;
+                width: 100%;
+                margin-top: auto;
             }
         }
 
@@ -806,6 +821,12 @@
         <div class="text-center mt-3">
             <strong>"GRACIAS POR SU PREFERENCIA"</strong>
         </div>
+        <div class="print-footer no-print-screen mt-4">
+            <div class="d-flex justify-content-between small text-muted border-top pt-2">
+                <span>SEER - Cotización - <span class="print-page-number"></span></span>
+                <span class="print-timestamp-placeholder"></span>
+            </div>
+        </div>
     </div>
 
     <!-- Print Description Page -->
@@ -832,6 +853,12 @@
         <div class="equipos-title">EQUIPOS</div>
         <div class="equipos-container" id="print-equipos-container">
             <!-- Equipment items will be added here -->
+        </div>
+        <div class="print-footer no-print-screen mt-auto">
+            <div class="d-flex justify-content-between small text-muted border-top pt-2">
+                <span>SEER - Anexo Descripciones - <span class="print-page-number"></span></span>
+                <span class="print-timestamp-placeholder"></span>
+            </div>
         </div>
     </div>
 
@@ -861,6 +888,12 @@
         <div id="print-diagramas-container">
             <!-- Diagram items will be added here -->
         </div>
+        <div class="print-footer no-print-screen mt-auto">
+            <div class="d-flex justify-content-between small text-muted border-top pt-2">
+                <span>SEER - Anexo Planos - <span class="print-page-number"></span></span>
+                <span class="print-timestamp-placeholder"></span>
+            </div>
+        </div>
     </div>
 
     <!-- Print Garantías Page -->
@@ -887,6 +920,13 @@
         <div class="equipos-title">CONDICIONES Y GARANTÍAS</div>
         <div class="garantias-content" id="print-garantias-content">
             <!-- Warranty text will go here -->
+        </div>
+        <div class="print-footer no-print-screen mt-auto">
+            <div class="d-flex justify-content-between small text-muted border-top pt-2">
+                <span>SEER - Términos y Condiciones - <span class="print-page-number"></span></span>
+                <span class="print-page-number"></span>
+                <span class="print-timestamp-placeholder"></span>
+            </div>
         </div>
     </div>
 
@@ -945,11 +985,41 @@
         }
 
         function triggerPrint() {
-            // Recommendation: Dynamic PDF filename based on client and ID
             const clientName = document.getElementById('input-cliente').value || 'Cliente';
             const quoteId = currentQuotationId || 'Draft';
             const originalTitle = document.title;
-            document.title = `Cotizacion_${clientName}_${quoteId}`;
+
+            // Set dynamic timestamp for footers
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('es-PE');
+            const timeStr = now.toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' });
+            const fullStamp = `${dateStr} ${timeStr}`;
+
+            document.querySelectorAll('.print-timestamp-placeholder').forEach(el => {
+                el.innerText = `Impreso el: ${fullStamp}`;
+            });
+
+            // Dynamic Page Numbering
+            const printableSections = [
+                document.getElementById('print-area'),
+                document.getElementById('print-description-area'),
+                document.getElementById('print-diagrams-area'),
+                document.getElementById('print-garantias-area')
+            ];
+
+            let currentPage = 1;
+            printableSections.forEach(section => {
+                if (section && (section.style.display === 'block' || window.getComputedStyle(section).display === 'block')) {
+                    const pageNumEls = section.querySelectorAll('.print-page-number');
+                    pageNumEls.forEach(el => {
+                        el.innerText = `Página ${currentPage}`;
+                    });
+                    currentPage++;
+                }
+            });
+
+            // Set title to space to avoid URL appearing in the browser header
+            document.title = ' ';
 
             // Force a small delay to ensure any pending UI updates are settled
             setTimeout(() => {
