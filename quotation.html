@@ -239,6 +239,126 @@
             background-color: #e9ecef;
             border-left-color: var(--primary);
         }
+
+        /* Description Page Styles */
+        .description-page {
+            display: none;
+            page-break-before: always;
+            padding: 15mm;
+            background: white;
+            color: black;
+            font-size: 11pt;
+            width: 210mm;
+            min-height: 297mm;
+            margin: 2rem auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .desc-box-header {
+            border: 2px solid #000;
+            padding: 10px 40px;
+            font-weight: bold;
+            font-size: 14pt;
+        }
+
+        .equipos-title {
+            background: #f2f2f2;
+            border: 1px solid #000;
+            display: inline-block;
+            padding: 5px 30px;
+            font-weight: bold;
+            margin-bottom: 0;
+            margin-top: 20px;
+        }
+
+        .equipos-container {
+            border: 1px solid #000;
+            margin-top: -1px;
+            /* Overlap with title border */
+        }
+
+        .equipo-item {
+            display: flex;
+            border-bottom: 1px solid #000;
+        }
+
+        .equipo-item:last-child {
+            border-bottom: none;
+        }
+
+        .equipo-img {
+            width: 200px;
+            padding: 10px;
+            border-right: 1px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .equipo-img img {
+            max-width: 100%;
+            max-height: 150px;
+        }
+
+        .equipo-text {
+            flex: 1;
+            padding: 15px;
+            text-align: justify;
+            font-size: 10pt;
+        }
+
+        .thumb-preview {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        @media print {
+            .description-page {
+                display: block !important;
+                box-shadow: none !important;
+                margin: 0 !important;
+                padding: 15mm !important;
+                width: 100% !important;
+            }
+        }
+
+        /* Diagrams & Plans Styles */
+        .diagram-item {
+            border: 1px solid #000;
+            margin-top: 20px;
+        }
+
+        .diagram-img {
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #000;
+        }
+
+        .diagram-img img {
+            max-width: 100%;
+            max-height: 400px;
+        }
+
+        .diagram-text {
+            padding: 15px;
+            text-align: justify;
+            font-size: 10pt;
+        }
+
+        /* Garantias Styles */
+        .garantias-content {
+            background-color: #f2f2f2;
+            padding: 30px;
+            min-height: 700px;
+            border: 1px solid #000;
+            text-align: justify;
+            font-size: 11pt;
+            white-space: pre-wrap;
+        }
     </style>
 </head>
 
@@ -280,7 +400,7 @@
                     <div class="col-md-6">
                         <label>Mi Dirección</label>
                         <input type="text" id="input-my-address" class="form-control"
-                            value="San Román San Román Juliaca, Puno, Perú" oninput="updatePrint()">
+                            value="San Román Juliaca, Puno, Perú" oninput="updatePrint()">
                     </div>
                     <div class="col-md-3">
                         <label>Mi Teléfono</label>
@@ -348,6 +468,36 @@
                 </div>
             </div>
 
+            <div class="card p-4 mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="m-0">Descripción de Equipos (Opcional)</h5>
+                    <button class="btn btn-info btn-sm text-white" onclick="addEquipoRow()">+ Agregar Equipo</button>
+                </div>
+                <div id="equipos-editor-list" class="row g-3">
+                    <!-- Equipment description editors will go here -->
+                </div>
+            </div>
+
+            <div class="card p-4 mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="m-0">Diagramas y Planos (Opcional)</h5>
+                    <button class="btn btn-primary btn-sm text-white" onclick="addDiagramaRow()">+ Agregar
+                        Diagrama/Plano</button>
+                </div>
+                <div id="diagramas-editor-list" class="row g-3">
+                    <!-- Diagram editors will go here -->
+                </div>
+            </div>
+
+            <div class="card p-4 mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="m-0">Condiciones y Garantías (Opcional)</h5>
+                </div>
+                <textarea id="input-garantias" class="form-control" rows="12"
+                    placeholder="Escribe aquí las condiciones de venta, garantías y otros términos..."
+                    oninput="updatePrint()"></textarea>
+            </div>
+
             <div class="text-end mb-4 d-flex justify-content-between align-items-center">
                 <div>
                     <button class="btn btn-outline-secondary px-4 me-2" onclick="newQuotation()">
@@ -403,7 +553,8 @@
                     <div style="font-size: 0.95rem; line-height: 1.3;">
                         <strong class="text-dark">Soluciones para la renovación ambiental y energética
                             E.I.R.L.</strong><br>
-                        <span id="print-my-address" class="text-muted">San Román San Román Juliaca, Puno, Perú</span><br>
+                        <span id="print-my-address" class="text-muted">San Román Juliaca, Puno,
+                            Perú</span><br>
                         <span class="text-muted">TELF: <span id="print-my-phone">+51 986 366 440</span></span>
                     </div>
                 </div>
@@ -509,6 +660,88 @@
         </div>
     </div>
 
+    <!-- Print Description Page -->
+    <div id="print-description-area" class="description-page">
+        <div class="invoice-header">
+            <div class="company-logo-area d-flex align-items-center">
+                <img src="img/logo.png" style="width: 100px; height: auto;" alt="Logo"
+                    onerror="this.src='https://via.placeholder.com/80?text=Seer'">
+                <div class="ms-4">
+                    <h2 class="m-0 text-primary fw-bold" style="letter-spacing: 1px;">SEER</h2>
+                    <div style="font-size: 0.95rem; line-height: 1.3;">
+                        <strong class="text-dark">Soluciones para la renovación ambiental y energética
+                            E.I.R.L.</strong><br>
+                        <span class="print-my-address-ref text-muted">San Román Juliaca, Puno, Perú</span><br>
+                        <span class="text-muted">TELF: <span class="print-my-phone-ref">+51 986 366 440</span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex align-items-center">
+                <div class="desc-box-header">DESCRIPCIÓN</div>
+            </div>
+        </div>
+
+        <div class="equipos-title">EQUIPOS</div>
+        <div class="equipos-container" id="print-equipos-container">
+            <!-- Equipment items will be added here -->
+        </div>
+    </div>
+
+    <!-- Print Diagrams Page -->
+    <div id="print-diagrams-area" class="description-page">
+        <div class="invoice-header">
+            <div class="company-logo-area d-flex align-items-center">
+                <img src="img/logo.png" style="width: 100px; height: auto;" alt="Logo"
+                    onerror="this.src='https://via.placeholder.com/80?text=Seer'">
+                <div class="ms-4">
+                    <h2 class="m-0 text-primary fw-bold" style="letter-spacing: 1px;">SEER</h2>
+                    <div style="font-size: 0.95rem; line-height: 1.3;">
+                        <strong class="text-dark">Soluciones para la renovación ambiental y energética
+                            E.I.R.L.</strong><br>
+                        <span class="print-my-address-ref text-muted">San Román Juliaca, Puno, Perú</span><br>
+                        <span class="text-muted">TELF: <span class="print-my-phone-ref">+51 986 366 440</span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex align-items-center">
+                <div class="desc-box-header text-center" style="font-size: 12pt; padding: 10px 20px;">DIAGRAMAS
+                    Y<br>PLANOS</div>
+            </div>
+        </div>
+
+        <div class="equipos-title">DIAGRAMAS Y PLANOS</div>
+        <div id="print-diagramas-container">
+            <!-- Diagram items will be added here -->
+        </div>
+    </div>
+
+    <!-- Print Garantías Page -->
+    <div id="print-garantias-area" class="description-page">
+        <div class="invoice-header">
+            <div class="company-logo-area d-flex align-items-center">
+                <img src="img/logo.png" style="width: 100px; height: auto;" alt="Logo"
+                    onerror="this.src='https://via.placeholder.com/80?text=Seer'">
+                <div class="ms-4">
+                    <h2 class="m-0 text-primary fw-bold" style="letter-spacing: 1px;">SEER</h2>
+                    <div style="font-size: 0.95rem; line-height: 1.3;">
+                        <strong class="text-dark">Soluciones para la renovación ambiental y energética
+                            E.I.R.L.</strong><br>
+                        <span class="print-my-address-ref text-muted">San Román Juliaca, Puno, Perú</span><br>
+                        <span class="text-muted">TELF: <span class="print-my-phone-ref">+51 986 366 440</span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex align-items-center">
+                <div class="desc-box-header">GARANTÍAS</div>
+            </div>
+        </div>
+
+        <div class="equipos-title">CONDICIONES Y GARANTÍAS</div>
+        <div class="garantias-content" id="print-garantias-content">
+            <!-- Warranty text will go here -->
+        </div>
+    </div>
+
     <script>
         function logout() {
             sessionStorage.clear();
@@ -516,9 +749,16 @@
         }
 
         function triggerPrint() {
+            // Recommendation: Dynamic PDF filename based on client and ID
+            const clientName = document.getElementById('input-cliente').value || 'Cliente';
+            const quoteId = currentQuotationId || 'Draft';
+            const originalTitle = document.title;
+            document.title = `Cotizacion_${clientName}_${quoteId}`;
+
             // Force a small delay to ensure any pending UI updates are settled
             setTimeout(() => {
                 window.print();
+                document.title = originalTitle; // Restore title after print dialog closes
             }, 100);
         }
 
@@ -851,6 +1091,311 @@
             // Simplified version for the demo
             return n.toLocaleString('es-PE', { minimumFractionDigits: 2 }) + " SOLES";
         }
+
+        // --- EQUIPOS DESCRIPTION LOGIC ---
+        let equiposData = [];
+
+        function addEquipoRow(savedData = null) {
+            const container = document.getElementById('equipos-editor-list');
+            const equipoId = Date.now() + Math.random().toString(36).substr(2, 9);
+
+            const div = document.createElement('div');
+            div.className = 'col-12 border rounded p-3 mb-2 equipo-editor-item';
+            div.id = `equipo-edit-${equipoId}`;
+
+            const imageSrc = savedData ? savedData.img : '';
+            const description = savedData ? savedData.desc : '';
+
+            div.innerHTML = `
+                <div class="row align-items-center">
+                    <div class="col-md-2 text-center">
+                        <img src="${imageSrc || 'https://via.placeholder.com/150?text=Sin+Imagen'}" class="thumb-preview mb-2" id="preview-${equipoId}">
+                        <input type="file" class="form-control form-control-sm img-input" accept="image/*" onchange="handleImageUpload(this, '${equipoId}')">
+                    </div>
+                    <div class="col-md-9">
+                        <textarea class="form-control equipo-desc-input" rows="3" placeholder="Descripción técnica del equipo..." oninput="updatePrint()">${description}</textarea>
+                    </div>
+                    <div class="col-md-1 text-end">
+                        <button class="btn btn-outline-danger btn-sm" onclick="removeEquipo('${equipoId}')"><i class="fa fa-trash"></i></button>
+                    </div>
+                </div>
+            `;
+            container.appendChild(div);
+            if (!savedData) updatePrint();
+        }
+
+        function handleImageUpload(input, id) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById(`preview-${id}`).src = e.target.result;
+                updatePrint();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeEquipo(id) {
+            document.getElementById(`equipo-edit-${id}`).remove();
+            updatePrint();
+        }
+
+        // --- INTEGRATED LOGIC (Equipos, Diagramas, Garantías) ---
+
+        // Recovery / Auto-save logic
+        function saveDraft() {
+            if (!isDirty) return;
+            const draftData = {
+                company: {
+                    ruc: document.getElementById('input-my-ruc').value,
+                    address: document.getElementById('input-my-address').value,
+                    phone: document.getElementById('input-my-phone').value,
+                    bank: document.getElementById('input-my-bank').value,
+                    cci: document.getElementById('input-my-cci').value
+                },
+                client: {
+                    name: document.getElementById('input-cliente').value,
+                    ruc: document.getElementById('input-ruc').value,
+                    date: document.getElementById('input-fecha').value,
+                    address: document.getElementById('input-direccion').value
+                },
+                items: Array.from(document.querySelectorAll('.item-row')).map(row => ({
+                    q: row.querySelector('.q-input').value,
+                    unit: row.querySelector('.unit-input').value,
+                    desc: row.querySelector('.desc-input').value,
+                    price: row.querySelector('.price-input').value
+                })),
+                equipos: Array.from(document.querySelectorAll('.equipo-editor-item')).map(item => ({
+                    img: item.querySelector('.thumb-preview').src,
+                    desc: item.querySelector('.equipo-desc-input').value
+                })),
+                diagramas: Array.from(document.querySelectorAll('.diagrama-editor-item')).map(item => ({
+                    img: item.querySelector('img').src,
+                    desc: item.querySelector('.diag-desc-input').value
+                })),
+                garantias: document.getElementById('input-garantias').value
+            };
+            localStorage.setItem('seer_draft', JSON.stringify(draftData));
+        }
+
+        // Global Update function
+        function updatePrint() {
+            // Mark as dirty
+            if (!isDirty && document.readyState === 'complete') {
+                setStatus(currentQuotationId, true);
+            }
+
+            // Sync company info
+            const myRuc = document.getElementById('input-my-ruc').value;
+            const myAddr = document.getElementById('input-my-address').value;
+            const myPhone = document.getElementById('input-my-phone').value;
+            const myBank = document.getElementById('input-my-bank').value;
+            const myCci = document.getElementById('input-my-cci').value;
+
+            document.getElementById('print-my-ruc').innerText = myRuc;
+            document.getElementById('print-my-address').innerText = myAddr;
+            document.getElementById('print-my-phone').innerText = myPhone;
+            document.getElementById('print-my-bank').innerText = myBank;
+            document.getElementById('print-my-cci').innerText = myCci;
+
+            // Sync to other pages refs
+            document.querySelectorAll('.print-my-address-ref').forEach(el => el.innerText = myAddr);
+            document.querySelectorAll('.print-my-phone-ref').forEach(el => el.innerText = myPhone);
+
+            // Sync client info
+            document.getElementById('print-cliente').innerText = document.getElementById('input-cliente').value;
+            document.getElementById('print-ruc').innerText = document.getElementById('input-ruc').value;
+            document.getElementById('print-fecha').innerText = document.getElementById('input-fecha').value;
+            document.getElementById('print-direccion').innerText = document.getElementById('input-direccion').value;
+
+            // Sync Items Table
+            const rows = document.querySelectorAll('.item-row');
+            const printTbody = document.getElementById('print-items-body');
+            printTbody.innerHTML = '';
+            let total = 0;
+            rows.forEach(row => {
+                const q = parseFloat(row.querySelector('.q-input').value) || 0;
+                const unit = row.querySelector('.unit-input').value;
+                const desc = row.querySelector('.desc-input').value;
+                const price = parseFloat(row.querySelector('.price-input').value) || 0;
+                const sub = q * price;
+                total += sub;
+                if (desc) {
+                    const pRow = document.createElement('tr');
+                    pRow.innerHTML = `<td>${q.toFixed(0)}</td><td>${unit}</td><td class="text-start">${desc}</td><td>${price.toFixed(2)}</td><td>${sub.toFixed(2)}</td>`;
+                    printTbody.appendChild(pRow);
+                }
+            });
+
+            const totalIGV = total * 0.18;
+            const totalFinal = total + totalIGV;
+            document.getElementById('print-subtotal').innerText = total.toFixed(2);
+            document.getElementById('print-igv').innerText = totalIGV.toFixed(2);
+            document.getElementById('print-total').innerText = totalFinal.toFixed(2);
+            document.getElementById('print-total-words').innerText = numberToSpanish(totalFinal);
+
+            // Sync Equipos (Page 2)
+            const equipoPrintContainer = document.getElementById('print-equipos-container');
+            const equipoPrintArea = document.getElementById('print-description-area');
+            const equipoEditors = document.querySelectorAll('.equipo-editor-item');
+            equipoPrintContainer.innerHTML = '';
+            if (equipoEditors.length > 0) {
+                equipoPrintArea.style.display = 'block';
+                equipoEditors.forEach(editor => {
+                    const imgSrc = editor.querySelector('.thumb-preview').src;
+                    const desc = editor.querySelector('.equipo-desc-input').value;
+                    if (desc || imgSrc.indexOf('placeholder') === -1) {
+                        const div = document.createElement('div'); div.className = 'equipo-item';
+                        div.innerHTML = `<div class="equipo-img"><img src="${imgSrc}"></div><div class="equipo-text">${desc.replace(/\n/g, '<br>')}</div>`;
+                        equipoPrintContainer.appendChild(div);
+                    }
+                });
+            } else { equipoPrintArea.style.display = 'none'; }
+
+            // Sync Diagramas (Page 3)
+            const diagPrintContainer = document.getElementById('print-diagramas-container');
+            const diagPrintArea = document.getElementById('print-diagrams-area');
+            const diagEditors = document.querySelectorAll('.diagrama-editor-item');
+            diagPrintContainer.innerHTML = '';
+            if (diagEditors.length > 0) {
+                diagPrintArea.style.display = 'block';
+                diagEditors.forEach(editor => {
+                    const imgSrc = editor.querySelector('img').src;
+                    const desc = editor.querySelector('.diag-desc-input').value;
+                    if (desc || imgSrc.indexOf('placeholder') === -1) {
+                        const div = document.createElement('div'); div.className = 'diagram-item';
+                        div.innerHTML = `<div class="diagram-img"><img src="${imgSrc}"></div><div class="diagram-text">${desc.replace(/\n/g, '<br>')}</div>`;
+                        diagPrintContainer.appendChild(div);
+                    }
+                });
+            } else { diagPrintArea.style.display = 'none'; }
+
+            // Sync Garantías (Page 4)
+            const garantiaText = document.getElementById('input-garantias').value;
+            const garantiaPrintContent = document.getElementById('print-garantias-content');
+            const garantiaPrintArea = document.getElementById('print-garantias-area');
+            garantiaPrintContent.innerText = garantiaText;
+            garantiaPrintArea.style.display = garantiaText.trim() ? 'block' : 'none';
+
+            saveDraft();
+        }
+
+        // Global Save function
+        function saveQuotation() {
+            const history = JSON.parse(localStorage.getItem('seer_history') || '[]');
+            const quotationData = {
+                id: currentQuotationId || `C${String(history.length + 1).padStart(3, '0')}`,
+                dateCreated: new Date().toISOString(),
+                company: {
+                    ruc: document.getElementById('input-my-ruc').value,
+                    address: document.getElementById('input-my-address').value,
+                    phone: document.getElementById('input-my-phone').value,
+                    bank: document.getElementById('input-my-bank').value,
+                    cci: document.getElementById('input-my-cci').value
+                },
+                client: {
+                    name: document.getElementById('input-cliente').value,
+                    ruc: document.getElementById('input-ruc').value,
+                    date: document.getElementById('input-fecha').value,
+                    address: document.getElementById('input-direccion').value
+                },
+                items: Array.from(document.querySelectorAll('.item-row')).map(row => ({
+                    q: row.querySelector('.q-input').value,
+                    unit: row.querySelector('.unit-input').value,
+                    desc: row.querySelector('.desc-input').value,
+                    price: row.querySelector('.price-input').value
+                })),
+                equipos: Array.from(document.querySelectorAll('.equipo-editor-item')).map(item => ({
+                    img: item.querySelector('.thumb-preview').src,
+                    desc: item.querySelector('.equipo-desc-input').value
+                })),
+                diagramas: Array.from(document.querySelectorAll('.diagrama-editor-item')).map(item => ({
+                    img: item.querySelector('img').src,
+                    desc: item.querySelector('.diag-desc-input').value
+                })),
+                garantias: document.getElementById('input-garantias').value
+            };
+
+            if (currentQuotationId) {
+                const index = history.findIndex(q => q.id === currentQuotationId);
+                if (index !== -1) history[index] = quotationData;
+                else history.push(quotationData);
+            } else {
+                history.push(quotationData);
+                currentQuotationId = quotationData.id;
+            }
+
+            localStorage.setItem('seer_history', JSON.stringify(history));
+            localStorage.removeItem('seer_draft');
+            setStatus(currentQuotationId, false);
+            document.getElementById('print-number').innerText = currentQuotationId.replace('C', '');
+            renderHistory();
+            alert('Cotización guardada exitosamente.');
+        }
+
+        // Global Load function
+        function loadQuotation(id) {
+            const history = JSON.parse(localStorage.getItem('seer_history') || '[]');
+            const data = history.find(q => q.id === id);
+            if (!data) return;
+
+            document.getElementById('input-my-ruc').value = data.company.ruc;
+            document.getElementById('input-my-address').value = data.company.address;
+            document.getElementById('input-my-phone').value = data.company.phone;
+            document.getElementById('input-my-bank').value = data.company.bank;
+            document.getElementById('input-my-cci').value = data.company.cci;
+            document.getElementById('input-cliente').value = data.client.name;
+            document.getElementById('input-ruc').value = data.client.ruc;
+            document.getElementById('input-fecha').value = data.client.date;
+            document.getElementById('input-direccion').value = data.client.address;
+            document.getElementById('input-garantias').value = data.garantias || '';
+
+            const tbody = document.getElementById('items-body');
+            tbody.innerHTML = '';
+            data.items.forEach(item => {
+                const row = document.createElement('tr'); row.className = 'item-row';
+                row.innerHTML = `<td><input type="number" class="form-control q-input" step="1" value="${item.q}" oninput="updatePrint()"></td><td><input type="text" class="form-control unit-input" value="${item.unit}" oninput="updatePrint()"></td><td><input type="text" class="form-control desc-input" value="${item.desc}" oninput="updatePrint()"></td><td><input type="number" class="form-control price-input" step="0.01" value="${item.price}" oninput="updatePrint()"></td><td class="text-center"><button class="btn btn-danger btn-sm" onclick="this.closest('tr').remove(); updatePrint();">x</button></td>`;
+                tbody.appendChild(row);
+            });
+
+            document.getElementById('equipos-editor-list').innerHTML = '';
+            if (data.equipos) data.equipos.forEach(eq => addEquipoRow(eq));
+            document.getElementById('diagramas-editor-list').innerHTML = '';
+            if (data.diagramas) data.diagramas.forEach(diag => addDiagramaRow(diag));
+
+            document.getElementById('print-number').innerText = id.replace('C', '');
+            updatePrint();
+            setStatus(id, false);
+            renderHistory();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Recovery on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const draft = localStorage.getItem('seer_draft');
+            if (draft && confirm('Se encontró una cotización sin guardar. ¿Deseas recuperarla?')) {
+                const data = JSON.parse(draft);
+                document.getElementById('input-cliente').value = data.client.name;
+                document.getElementById('input-ruc').value = data.client.ruc;
+                document.getElementById('input-fecha').value = data.client.date;
+                document.getElementById('input-direccion').value = data.client.address;
+                document.getElementById('input-garantias').value = data.garantias || '';
+                const tbody = document.getElementById('items-body');
+                tbody.innerHTML = '';
+                data.items.forEach(item => {
+                    const row = document.createElement('tr'); row.className = 'item-row';
+                    row.innerHTML = `<td><input type="number" class="form-control q-input" step="1" value="${item.q}" oninput="updatePrint()"></td><td><input type="text" class="form-control unit-input" value="${item.unit}" oninput="updatePrint()"></td><td><input type="text" class="form-control desc-input" value="${item.desc}" oninput="updatePrint()"></td><td><input type="number" class="form-control price-input" step="0.01" value="${item.price}" oninput="updatePrint()"></td><td class="text-center"><button class="btn btn-danger btn-sm" onclick="this.closest('tr').remove(); updatePrint();">x</button></td>`;
+                    tbody.appendChild(row);
+                });
+                document.getElementById('equipos-editor-list').innerHTML = '';
+                if (data.equipos) data.equipos.forEach(eq => addEquipoRow(eq));
+                document.getElementById('diagramas-editor-list').innerHTML = '';
+                if (data.diagramas) data.diagramas.forEach(diag => addDiagramaRow(diag));
+                updatePrint();
+                setStatus(null, true);
+            }
+        });
     </script>
 </body>
 
