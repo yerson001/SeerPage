@@ -1141,6 +1141,52 @@
             updatePrint();
         }
 
+        // --- DIAGRAMAS Y PLANOS LOGIC ---
+        function addDiagramaRow(savedData = null) {
+            const container = document.getElementById('diagramas-editor-list');
+            const diagId = Date.now() + Math.random().toString(36).substr(2, 9);
+
+            const div = document.createElement('div');
+            div.className = 'col-12 border rounded p-3 mb-2 diagrama-editor-item';
+            div.id = `diag-edit-${diagId}`;
+
+            const imageSrc = savedData ? savedData.img : '';
+            const description = savedData ? savedData.desc : '';
+
+            div.innerHTML = `
+                <div class="row align-items-center">
+                    <div class="col-md-3 text-center">
+                        <img src="${imageSrc || 'https://via.placeholder.com/200x120?text=Subir+Diagrama'}" class="thumb-preview mb-2 w-100 h-auto" id="prev-diag-${diagId}" style="max-height: 120px;">
+                        <input type="file" class="form-control form-control-sm img-input" accept="image/*" onchange="handleDiagramaUpload(this, '${diagId}')">
+                    </div>
+                    <div class="col-md-8">
+                        <textarea class="form-control diag-desc-input" rows="3" placeholder="Descripción del diagrama o plano..." oninput="updatePrint()">${description}</textarea>
+                    </div>
+                    <div class="col-md-1 text-end">
+                        <button class="btn btn-outline-danger btn-sm" onclick="removeDiagrama('${diagId}')"><i class="fa fa-trash"></i></button>
+                    </div>
+                </div>
+            `;
+            container.appendChild(div);
+            if (!savedData) updatePrint();
+        }
+
+        function handleDiagramaUpload(input, id) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById(`prev-diag-${id}`).src = e.target.result;
+                updatePrint();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeDiagrama(id) {
+            document.getElementById(`diag-edit-${id}`).remove();
+            updatePrint();
+        }
+
         // --- INTEGRATED LOGIC (Equipos, Diagramas, Garantías) ---
 
         // Recovery / Auto-save logic
