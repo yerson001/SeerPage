@@ -11,7 +11,8 @@
     <link href="css/style.css" rel="stylesheet">
     <style>
         :root {
-            --seer-green: #32CD32;
+            --seer-green: #666;
+            --primary: #444;
         }
 
         body {
@@ -154,10 +155,13 @@
             #print-area {
                 box-shadow: none !important;
                 margin: 0 !important;
-                padding: 0 !important;
+                padding: 15mm !important;
+                /* Restore padding for PDF margins */
                 width: 100% !important;
                 display: block !important;
                 visibility: visible !important;
+                min-height: auto !important;
+                /* Critical fix */
             }
 
             #print-area * {
@@ -166,16 +170,67 @@
 
             /* Ensure background colors print */
             .table-invoice th,
-            .bank-accounts th {
-                background-color: #d1ecf1 !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
+            .bank-accounts th,
+            .desc-box-header,
+            .equipos-title,
+            .equipo-text,
+            .diagram-text,
+            .garantias-content,
+            .ruc-box {
+                background-color: #f8f9fa !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            .equipos-title {
+                background-color: #666 !important;
+                color: white !important;
             }
 
             .table-invoice tbody tr:nth-child(even) {
                 background-color: #f9f9f9 !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            /* Optimized PDF output: no unnecessary blank pages */
+            .description-page {
+                display: none;
+                margin: 0 !important;
+                padding: 15mm !important;
+                width: 100% !important;
+                background: white !important;
+                box-shadow: none !important;
+                min-height: auto !important;
+            }
+
+            /* Only show if actually desired */
+            .description-page[style*="display: block"] {
+                display: block !important;
+            }
+
+            h1,
+            h2,
+            h3,
+            h4,
+            h5,
+            h6 {
+                page-break-after: avoid;
+                break-after: avoid;
+            }
+
+            table {
+                page-break-inside: auto;
+            }
+
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            img {
+                max-width: 100% !important;
+                page-break-inside: avoid;
             }
         }
 
@@ -247,15 +302,13 @@
         /* Description Page Styles */
         .description-page {
             display: none;
-            page-break-before: always;
             padding: 15mm;
             background: white;
             color: black;
             font-size: 11pt;
             width: 210mm;
             min-height: 297mm;
-            margin: 2rem auto;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            margin: 0 auto;
         }
 
         .desc-box-header {
@@ -268,7 +321,7 @@
         }
 
         .equipos-title {
-            background: var(--primary);
+            background: #666;
             color: white;
             border-radius: 8px 8px 0 0;
             display: inline-block;
@@ -329,12 +382,77 @@
         }
 
         @media print {
+
+            /* Forced Backgrounds */
+            .table-invoice th,
+            .bank-accounts th,
+            .desc-box-header,
+            .equipos-title,
+            .equipo-text,
+            .diagram-text,
+            .garantias-content,
+            .ruc-box,
+            .totals-table,
+            .totals-table td,
+            .active-id-badge {
+                background-color: #f8f9fa !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            .equipos-title,
+            .active-id-badge {
+                background-color: #444 !important;
+                color: white !important;
+            }
+
             .description-page {
-                display: block !important;
-                box-shadow: none !important;
+                display: none;
+                /* Correctly controlled by JS */
                 margin: 0 !important;
                 padding: 15mm !important;
                 width: 100% !important;
+                background: white !important;
+                box-shadow: none !important;
+                overflow: visible !important;
+                min-height: auto !important;
+            }
+
+            /* Show strictly what JS says */
+            .description-page[style*="display: block"],
+            .description-page[style*="display:block"] {
+                display: block !important;
+            }
+
+            .page-break {
+                display: block;
+                height: 0;
+                margin: 0;
+                padding: 0;
+                page-break-before: always;
+                break-before: page;
+            }
+
+            h1,
+            h2,
+            h3,
+            h4,
+            h5,
+            h6 {
+                page-break-after: avoid;
+            }
+
+            table {
+                page-break-inside: auto;
+            }
+
+            tr {
+                page-break-inside: avoid;
+            }
+
+            img {
+                max-width: 100% !important;
+                page-break-inside: avoid;
             }
         }
 
@@ -372,7 +490,8 @@
         .garantias-content {
             background-color: #f8f9fa;
             padding: 35px;
-            min-height: 700px;
+            min-height: 200px;
+            /* Reduced to avoid extra blank pages */
             border: 1px solid #ddd;
             border-radius: 12px;
             text-align: justify;
@@ -1095,9 +1214,11 @@
         function handleItemInput(input) {
             updatePrint();
             // Autocomplete check
-            const val = input.value;
+            const val = input.value.trim();
+            if (!val) return;
+
             const products = JSON.parse(localStorage.getItem('seer_products') || '[]');
-            const product = products.find(p => p.desc === val);
+            const product = products.find(p => p.desc.trim() === val);
             if (product) {
                 const row = input.closest('tr');
                 row.querySelector('.unit-input').value = product.unit;
@@ -1170,7 +1291,7 @@
         }
 
         // Add 1 default row
-        addRow();
+        addItemRow();
 
         // Set today's date
         document.getElementById('input-fecha').valueAsDate = new Date();
@@ -1377,43 +1498,75 @@
             const equipoPrintArea = document.getElementById('print-description-area');
             const equipoEditors = document.querySelectorAll('.equipo-editor-item');
             equipoPrintContainer.innerHTML = '';
-            if (equipoEditors.length > 0) {
+            let hasEquipos = false;
+
+            equipoEditors.forEach(editor => {
+                const imgSrc = editor.querySelector('.thumb-preview').src;
+                const desc = editor.querySelector('.equipo-desc-input').value.trim();
+                const isPlaceholder = imgSrc.includes('placeholder.com');
+                if (desc || !isPlaceholder) {
+                    hasEquipos = true;
+                    const div = document.createElement('div'); div.className = 'equipo-item';
+                    div.innerHTML = `<div class="equipo-img"><img src="${imgSrc}"></div><div class="equipo-text">${desc.replace(/\n/g, '<br>')}</div>`;
+                    equipoPrintContainer.appendChild(div);
+                }
+            });
+
+            if (hasEquipos) {
                 equipoPrintArea.style.display = 'block';
-                equipoEditors.forEach(editor => {
-                    const imgSrc = editor.querySelector('.thumb-preview').src;
-                    const desc = editor.querySelector('.equipo-desc-input').value;
-                    if (desc || imgSrc.indexOf('placeholder') === -1) {
-                        const div = document.createElement('div'); div.className = 'equipo-item';
-                        div.innerHTML = `<div class="equipo-img"><img src="${imgSrc}"></div><div class="equipo-text">${desc.replace(/\n/g, '<br>')}</div>`;
-                        equipoPrintContainer.appendChild(div);
-                    }
-                });
-            } else { equipoPrintArea.style.display = 'none'; }
+                // Add conditional page break
+                if (!equipoPrintArea.querySelector('.page-break')) {
+                    const pb = document.createElement('div'); pb.className = 'page-break no-print-screen';
+                    equipoPrintArea.prepend(pb);
+                }
+            } else {
+                equipoPrintArea.style.display = 'none';
+            }
 
             // Sync Diagramas (Page 3)
             const diagPrintContainer = document.getElementById('print-diagramas-container');
             const diagPrintArea = document.getElementById('print-diagrams-area');
             const diagEditors = document.querySelectorAll('.diagrama-editor-item');
             diagPrintContainer.innerHTML = '';
-            if (diagEditors.length > 0) {
+            let hasDiagramas = false;
+
+            diagEditors.forEach(editor => {
+                const imgSrc = editor.querySelector('img').src;
+                const desc = editor.querySelector('.diag-desc-input').value.trim();
+                const isPlaceholder = imgSrc.includes('placeholder.com');
+                if (desc || !isPlaceholder) {
+                    hasDiagramas = true;
+                    const div = document.createElement('div'); div.className = 'diagram-item';
+                    div.innerHTML = `<div class="diagram-img"><img src="${imgSrc}"></div><div class="diagram-text">${desc.replace(/\n/g, '<br>')}</div>`;
+                    diagPrintContainer.appendChild(div);
+                }
+            });
+
+            if (hasDiagramas) {
                 diagPrintArea.style.display = 'block';
-                diagEditors.forEach(editor => {
-                    const imgSrc = editor.querySelector('img').src;
-                    const desc = editor.querySelector('.diag-desc-input').value;
-                    if (desc || imgSrc.indexOf('placeholder') === -1) {
-                        const div = document.createElement('div'); div.className = 'diagram-item';
-                        div.innerHTML = `<div class="diagram-img"><img src="${imgSrc}"></div><div class="diagram-text">${desc.replace(/\n/g, '<br>')}</div>`;
-                        diagPrintContainer.appendChild(div);
-                    }
-                });
-            } else { diagPrintArea.style.display = 'none'; }
+                if (!diagPrintArea.querySelector('.page-break')) {
+                    const pb = document.createElement('div'); pb.className = 'page-break no-print-screen';
+                    diagPrintArea.prepend(pb);
+                }
+            } else {
+                diagPrintArea.style.display = 'none';
+            }
 
             // Sync Garantías (Page 4)
-            const garantiaText = document.getElementById('input-garantias').value;
+            const garantiaText = document.getElementById('input-garantias').value.trim();
             const garantiaPrintContent = document.getElementById('print-garantias-content');
             const garantiaPrintArea = document.getElementById('print-garantias-area');
-            garantiaPrintContent.innerText = garantiaText;
-            garantiaPrintArea.style.display = garantiaText.trim() ? 'block' : 'none';
+
+            if (garantiaText) {
+                garantiaPrintContent.innerText = garantiaText;
+                garantiaPrintArea.style.display = 'block';
+                if (!garantiaPrintArea.querySelector('.page-break')) {
+                    const pb = document.createElement('div'); pb.className = 'page-break no-print-screen';
+                    garantiaPrintArea.prepend(pb);
+                }
+            } else {
+                garantiaPrintArea.style.display = 'none';
+            }
 
             saveDraft();
         }
