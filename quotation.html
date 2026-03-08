@@ -156,12 +156,10 @@
                 box-shadow: none !important;
                 margin: 0 !important;
                 padding: 15mm !important;
-                /* Restore padding for PDF margins */
                 width: 100% !important;
                 display: block !important;
                 visibility: visible !important;
                 min-height: auto !important;
-                /* Critical fix */
             }
 
             #print-area * {
@@ -416,14 +414,13 @@
 
             .description-page {
                 display: none;
-                /* Correctly controlled by JS */
                 margin: 0 !important;
                 padding: 15mm !important;
                 width: 100% !important;
                 background: white !important;
                 box-shadow: none !important;
-                overflow: visible !important;
                 min-height: auto !important;
+                overflow: visible !important;
             }
 
             /* Show strictly what JS says */
@@ -465,9 +462,9 @@
 
             .print-footer {
                 display: block !important;
-                position: relative;
-                width: 100%;
-                margin-top: auto;
+                position: relative !important;
+                width: 100% !important;
+                margin-top: 30px !important;
             }
         }
 
@@ -924,7 +921,6 @@
         <div class="print-footer no-print-screen mt-auto">
             <div class="d-flex justify-content-between small text-muted border-top pt-2">
                 <span>SEER - Términos y Condiciones - <span class="print-page-number"></span></span>
-                <span class="print-page-number"></span>
                 <span class="print-timestamp-placeholder"></span>
             </div>
         </div>
