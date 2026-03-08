@@ -379,6 +379,13 @@
             margin: 0 auto;
         }
 
+        .page-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
         .desc-box-header {
             border: 1px solid #ddd;
             border-radius: 12px;
@@ -619,27 +626,27 @@
                     <div class="col-md-3">
                         <label>Mi R.U.C.</label>
                         <input type="text" id="input-my-ruc" class="form-control" value="2061376524"
-                            oninput="updatePrint()">
+                            oninput="debounceUpdatePrint()">
                     </div>
                     <div class="col-md-6">
                         <label>Mi Dirección</label>
                         <input type="text" id="input-my-address" class="form-control"
-                            value="San Román Juliaca, Puno, Perú" oninput="updatePrint()">
+                            value="San Román Juliaca, Puno, Perú" oninput="debounceUpdatePrint()">
                     </div>
                     <div class="col-md-3">
                         <label>Mi Teléfono</label>
                         <input type="text" id="input-my-phone" class="form-control" value="+51 986 366 440"
-                            oninput="updatePrint()">
+                            oninput="debounceUpdatePrint()">
                     </div>
                     <div class="col-md-6">
                         <label>Cuenta Bancaria (Soles)</label>
                         <input type="text" id="input-my-bank" class="form-control" value="322-3007459369"
-                            oninput="updatePrint()">
+                            oninput="debounceUpdatePrint()">
                     </div>
                     <div class="col-md-6">
                         <label>CCI</label>
                         <input type="text" id="input-my-cci" class="form-control" value="003-322-003007459369-57"
-                            oninput="updatePrint()">
+                            oninput="debounceUpdatePrint()">
                     </div>
                 </div>
             </div>
@@ -650,21 +657,21 @@
                     <div class="col-md-6">
                         <label>Cliente / Razón Social</label>
                         <input type="text" id="input-cliente" class="form-control" placeholder="Nombre completo"
-                            oninput="updatePrint()">
+                            oninput="debounceUpdatePrint()">
                     </div>
                     <div class="col-md-3">
                         <label>R.U.C.</label>
                         <input type="text" id="input-ruc" class="form-control" placeholder="20XXXXXXXXX"
-                            oninput="updatePrint()">
+                            oninput="debounceUpdatePrint()">
                     </div>
                     <div class="col-md-3">
                         <label>Fecha</label>
-                        <input type="date" id="input-fecha" class="form-control" oninput="updatePrint()">
+                        <input type="date" id="input-fecha" class="form-control" oninput="debounceUpdatePrint()">
                     </div>
                     <div class="col-md-6">
                         <label>Dirección</label>
                         <input type="text" id="input-direccion" class="form-control" placeholder="Dirección del cliente"
-                            oninput="updatePrint()">
+                            oninput="debounceUpdatePrint()">
                     </div>
                 </div>
             </div>
@@ -726,7 +733,7 @@
                 </div>
                 <textarea id="input-garantias" class="form-control" rows="12"
                     placeholder="Escribe aquí las condiciones de venta, garantías y otros términos..."
-                    oninput="updatePrint()"></textarea>
+                    oninput="debounceUpdatePrint()"></textarea>
             </div>
 
             <div class="text-end mb-4 d-flex justify-content-between align-items-center">
@@ -910,17 +917,24 @@
         }
 
         function renderHistory() {
-            const history = JSON.parse(localStorage.getItem('seer_history') || '[]');
+            let quotationHistory = [];
+            try {
+                quotationHistory = JSON.parse(localStorage.getItem('seer_history') || '[]');
+                if (!Array.isArray(quotationHistory)) quotationHistory = [];
+            } catch (e) {
+                quotationHistory = [];
+            }
+
             const container = document.getElementById('history-container');
             if (!container) return;
             container.innerHTML = '';
 
-            if (history.length === 0) {
+            if (quotationHistory.length === 0) {
                 container.innerHTML = '<p class="text-muted text-center py-4">No hay cotizaciones guardadas aún.</p>';
                 return;
             }
 
-            history.sort((a, b) => new Date(b.dateCreated) - new Date(a.dateCreated)).forEach(item => {
+            quotationHistory.sort((a, b) => new Date(b.dateCreated) - new Date(a.dateCreated)).forEach(item => {
                 const div = document.createElement('div');
                 div.className = `list-group-item history-item d-flex justify-content-between align-items-center ${currentQuotationId === item.id ? 'active' : ''}`;
                 div.onclick = (e) => {
@@ -947,8 +961,9 @@
         function deleteHistoryItem(event, id) {
             if (event) event.stopPropagation();
             if (confirm(`¿Está seguro de eliminar la cotización ${id}?`)) {
-                const history = JSON.parse(localStorage.getItem('seer_history') || '[]');
-                const newHistory = history.filter(q => q.id !== id);
+                let quotationHistory = JSON.parse(localStorage.getItem('seer_history') || '[]');
+                if (!Array.isArray(quotationHistory)) quotationHistory = [];
+                const newHistory = quotationHistory.filter(q => q.id !== id);
                 localStorage.setItem('seer_history', JSON.stringify(newHistory));
                 if (currentQuotationId === id) setStatus(null, true);
                 renderHistory();
@@ -965,7 +980,8 @@
                 document.getElementById('items-body').innerHTML = '';
                 document.getElementById('equipos-editor-list').innerHTML = '';
                 document.getElementById('diagramas-editor-list').innerHTML = '';
-                document.getElementById('print-number').innerText = '---';
+                const printNum = document.getElementById('print-number');
+                if (printNum) printNum.innerText = '---';
                 addRow();
                 updatePrint();
                 setStatus(null, true);
@@ -973,8 +989,8 @@
             }
         }
         function exportHistory() {
-            const history = localStorage.getItem('seer_history') || '[]';
-            const blob = new Blob([history], { type: 'application/json' });
+            const historyString = localStorage.getItem('seer_history') || '[]';
+            const blob = new Blob([historyString], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
@@ -990,14 +1006,16 @@
             const reader = new FileReader();
             reader.onload = function (e) {
                 try {
-                    const history = JSON.parse(e.target.result);
-                    if (confirm('¿Desea importar estas cotizaciones? Esto reemplazará su historial actual.')) {
-                        localStorage.setItem('seer_history', JSON.stringify(history));
+                    const imported = JSON.parse(e.target.result);
+                    if (!Array.isArray(imported)) throw new Error("El archivo no contiene un historial válido.");
+
+                    if (confirm(`¿Desea importar ${imported.length} cotizaciones? Esto reemplazará su historial actual.`)) {
+                        localStorage.setItem('seer_history', JSON.stringify(imported));
                         renderHistory();
                         alert('Historial importado correctamente.');
                     }
                 } catch (err) {
-                    alert('Error al leer el archivo JSON.');
+                    alert('Error al importar: ' + err.message);
                 }
             };
             reader.readAsText(file);
@@ -1010,10 +1028,10 @@
             const row = document.createElement('tr');
             row.className = 'item-row';
             row.innerHTML = `
-                <td><input type="number" class="form-control q-input" step="1" value="1" oninput="updatePrint()"></td>
-                <td><input type="text" class="form-control unit-input" value="UNID." placeholder="unid" oninput="updatePrint()"></td>
+                <td><input type="number" class="form-control q-input" step="1" value="1" oninput="debounceUpdatePrint()"></td>
+                <td><input type="text" class="form-control unit-input" value="UNID." placeholder="unid" oninput="debounceUpdatePrint()"></td>
                 <td><input type="text" class="form-control desc-input" placeholder="Descripción del producto" list="products-datalist" oninput="handleItemInput(this)"></td>
-                <td><input type="number" class="form-control price-input" step="0.01" value="0.00" oninput="updatePrint()"></td>
+                <td><input type="number" class="form-control price-input" step="0.01" value="0.00" oninput="debounceUpdatePrint()"></td>
                 <td class="text-center"><button class="btn btn-danger btn-sm" onclick="this.closest('tr').remove(); updatePrint();">x</button></td>
             `;
             tbody.appendChild(row);
@@ -1062,7 +1080,7 @@
                         <input type="file" class="form-control form-control-sm img-input" accept="image/*" onchange="handleImageUpload(this, '${equipoId}')">
                     </div>
                     <div class="col-md-9">
-                        <textarea class="form-control equipo-desc-input" rows="3" placeholder="Descripción técnica del equipo..." oninput="updatePrint()">${description}</textarea>
+                        <textarea class="form-control equipo-desc-input" rows="3" placeholder="Descripción técnica del equipo..." oninput="debounceUpdatePrint()">${description}</textarea>
                     </div>
                     <div class="col-md-1 text-end">
                         <button class="btn btn-outline-danger btn-sm" onclick="removeEquipo('${equipoId}')"><i class="fa fa-trash"></i></button>
@@ -1109,7 +1127,7 @@
                         <input type="file" class="form-control form-control-sm img-input" accept="image/*" onchange="handleDiagramaUpload(this, '${diagId}')">
                     </div>
                     <div class="col-md-8">
-                        <textarea class="form-control diag-desc-input" rows="3" placeholder="Descripción del diagrama o plano..." oninput="updatePrint()">${description}</textarea>
+                        <textarea class="form-control diag-desc-input" rows="3" placeholder="Descripción del diagrama o plano..." oninput="debounceUpdatePrint()">${description}</textarea>
                     </div>
                     <div class="col-md-1 text-end">
                         <button class="btn btn-outline-danger btn-sm" onclick="removeDiagrama('${diagId}')"><i class="fa fa-trash"></i></button>
@@ -1141,46 +1159,59 @@
         // Recovery / Auto-save logic
         function saveDraft() {
             if (!isDirty) return;
-            const draftData = {
-                company: {
-                    ruc: document.getElementById('input-my-ruc').value,
-                    address: document.getElementById('input-my-address').value,
-                    phone: document.getElementById('input-my-phone').value,
-                    bank: document.getElementById('input-my-bank').value,
-                    cci: document.getElementById('input-my-cci').value
-                },
-                client: {
-                    name: document.getElementById('input-cliente').value,
-                    ruc: document.getElementById('input-ruc').value,
-                    date: document.getElementById('input-fecha').value,
-                    address: document.getElementById('input-direccion').value
-                },
-                items: Array.from(document.querySelectorAll('.item-row')).map(row => ({
-                    q: row.querySelector('.q-input').value,
-                    unit: row.querySelector('.unit-input').value,
-                    desc: row.querySelector('.desc-input').value,
-                    price: row.querySelector('.price-input').value
-                })),
-                equipos: Array.from(document.querySelectorAll('.equipo-editor-item')).map(item => ({
-                    img: item.querySelector('.thumb-preview').src,
-                    desc: item.querySelector('.equipo-desc-input').value
-                })),
-                diagramas: Array.from(document.querySelectorAll('.diagrama-editor-item')).map(item => ({
-                    img: item.querySelector('img').src,
-                    desc: item.querySelector('.diag-desc-input').value
-                })),
-                garantias: document.getElementById('input-garantias').value
-            };
-            localStorage.setItem('seer_draft', JSON.stringify(draftData));
+            try {
+                const draftData = {
+                    company: {
+                        ruc: document.getElementById('input-my-ruc').value,
+                        address: document.getElementById('input-my-address').value,
+                        phone: document.getElementById('input-my-phone').value,
+                        bank: document.getElementById('input-my-bank').value,
+                        cci: document.getElementById('input-my-cci').value
+                    },
+                    client: {
+                        name: document.getElementById('input-cliente').value,
+                        ruc: document.getElementById('input-ruc').value,
+                        date: document.getElementById('input-fecha').value,
+                        address: document.getElementById('input-direccion').value
+                    },
+                    items: Array.from(document.querySelectorAll('.item-row')).map(row => ({
+                        q: row.querySelector('.q-input').value,
+                        unit: row.querySelector('.unit-input').value,
+                        desc: row.querySelector('.desc-input').value,
+                        price: row.querySelector('.price-input').value
+                    })),
+                    equipos: Array.from(document.querySelectorAll('.equipo-editor-item')).map(item => ({
+                        img: item.querySelector('.thumb-preview').src,
+                        desc: item.querySelector('.equipo-desc-input').value
+                    })).filter(e => e.desc.trim() !== '' || (e.img && !e.img.includes('placeholder'))),
+                    diagramas: Array.from(document.querySelectorAll('.diagrama-editor-item')).map(item => ({
+                        img: item.querySelector('img').src,
+                        desc: item.querySelector('.diag-desc-input').value
+                    })).filter(d => d.desc.trim() !== '' || (d.img && !d.img.includes('placeholder'))),
+                    garantias: document.getElementById('input-garantias').value
+                };
+                localStorage.setItem('seer_draft', JSON.stringify(draftData));
+            } catch (e) {
+                console.warn("Storage draft failed (likely size limit):", e);
+            }
         }
 
         // --- VIRTUAL PAGINATION ENGINE ---
+        let printTimeout = null;
+        function debounceUpdatePrint() {
+            if (printTimeout) clearTimeout(printTimeout);
+            printTimeout = setTimeout(() => {
+                updatePrint();
+            }, 300);
+        }
+
         function updatePrint() {
             if (!isDirty && document.readyState === 'complete') {
                 setStatus(currentQuotationId, true);
             }
 
             const printArea = document.getElementById('print-area');
+            if (!printArea) return;
             printArea.innerHTML = ''; // Clear previous preview
 
             let globalPageCount = 0;
@@ -1214,12 +1245,12 @@
             const equipos = Array.from(document.querySelectorAll('.equipo-editor-item')).map(item => ({
                 img: item.querySelector('.thumb-preview').src,
                 desc: item.querySelector('.equipo-desc-input').value
-            })).filter(e => e.desc.trim() !== '');
+            })).filter(e => e.desc.trim() !== '' || (e.img && !e.img.includes('placeholder')));
 
             const diagramas = Array.from(document.querySelectorAll('.diagrama-editor-item')).map(item => ({
                 img: item.querySelector('img').src,
                 desc: item.querySelector('.diag-desc-input').value
-            })).filter(d => d.desc.trim() !== '');
+            })).filter(d => d.desc.trim() !== '' || (d.img && !d.img.includes('placeholder')));
 
             const garantiaText = document.getElementById('input-garantias').value;
 
@@ -1428,7 +1459,8 @@
         // Global Save function
         function saveQuotation() {
             try {
-                const history = JSON.parse(localStorage.getItem('seer_history') || '[]');
+                let quotationHistory = JSON.parse(localStorage.getItem('seer_history') || '[]');
+                if (!Array.isArray(quotationHistory)) quotationHistory = [];
 
                 // Essential element checks
                 const getVal = (id) => {
@@ -1438,7 +1470,13 @@
                 };
 
                 const quotationData = {
-                    id: currentQuotationId || `C${String(history.length + 1).padStart(3, '0')}`,
+                    id: currentQuotationId || (function () {
+                        const maxId = quotationHistory.reduce((max, q) => {
+                            const num = parseInt(q.id.replace('C', '')) || 0;
+                            return Math.max(max, num);
+                        }, 0);
+                        return `C${String(maxId + 1).padStart(3, '0')}`;
+                    })(),
                     dateCreated: new Date().toISOString(),
                     company: {
                         ruc: getVal('input-my-ruc'),
@@ -1464,24 +1502,24 @@
                     equipos: Array.from(document.querySelectorAll('.equipo-editor-item')).map(item => ({
                         img: item.querySelector('.thumb-preview').src,
                         desc: item.querySelector('.equipo-desc-input').value
-                    })),
+                    })).filter(e => e.desc.trim() !== '' || (e.img && !e.img.includes('placeholder'))),
                     diagramas: Array.from(document.querySelectorAll('.diagrama-editor-item')).map(item => ({
                         img: item.querySelector('img').src,
                         desc: item.querySelector('.diag-desc-input').value
-                    })),
+                    })).filter(d => d.desc.trim() !== '' || (d.img && !d.img.includes('placeholder'))),
                     garantias: getVal('input-garantias')
                 };
 
                 if (currentQuotationId) {
-                    const index = history.findIndex(q => q.id === currentQuotationId);
-                    if (index !== -1) history[index] = quotationData;
-                    else history.push(quotationData);
+                    const index = quotationHistory.findIndex(q => q.id === currentQuotationId);
+                    if (index !== -1) quotationHistory[index] = quotationData;
+                    else quotationHistory.push(quotationData);
                 } else {
-                    history.push(quotationData);
+                    quotationHistory.push(quotationData);
                     currentQuotationId = quotationData.id;
                 }
 
-                localStorage.setItem('seer_history', JSON.stringify(history));
+                localStorage.setItem('seer_history', JSON.stringify(quotationHistory));
                 localStorage.removeItem('seer_draft');
                 setStatus(currentQuotationId, false);
 
@@ -1492,14 +1530,18 @@
                 alert('Cotización guardada exitosamente.');
             } catch (err) {
                 console.error("Save Error:", err);
-                alert('Error al guardar: ' + err.message);
+                if (err.name === 'QuotaExceededError' || err.code === 22) {
+                    alert('Error: No hay espacio suficiente para guardar. Las imágenes son demasiado grandes. Por favor, use imágenes más pequeñas.');
+                } else {
+                    alert('Error al guardar: ' + err.message);
+                }
             }
         }
 
         // Global Load function
         function loadQuotation(id) {
-            const history = JSON.parse(localStorage.getItem('seer_history') || '[]');
-            const data = history.find(q => q.id === id);
+            const quotationHistory = JSON.parse(localStorage.getItem('seer_history') || '[]');
+            const data = quotationHistory.find(q => q.id === id);
             if (!data) return;
 
             document.getElementById('input-my-ruc').value = data.company.ruc;
@@ -1518,10 +1560,10 @@
             data.items.forEach(item => {
                 const row = document.createElement('tr'); row.className = 'item-row';
                 row.innerHTML = `
-                    <td><input type="number" class="form-control q-input" step="1" value="${item.q}" oninput="updatePrint()"></td>
-                    <td><input type="text" class="form-control unit-input" value="${item.unit}" placeholder="unid" oninput="updatePrint()"></td>
+                    <td><input type="number" class="form-control q-input" step="1" value="${item.q}" oninput="debounceUpdatePrint()"></td>
+                    <td><input type="text" class="form-control unit-input" value="${item.unit}" placeholder="unid" oninput="debounceUpdatePrint()"></td>
                     <td><input type="text" class="form-control desc-input" value="${item.desc}" placeholder="Descripción..." list="products-datalist" oninput="handleItemInput(this)"></td>
-                    <td><input type="number" class="form-control price-input" step="0.01" value="${item.price}" oninput="updatePrint()"></td>
+                    <td><input type="number" class="form-control price-input" step="0.01" value="${item.price}" oninput="debounceUpdatePrint()"></td>
                     <td class="text-center"><button class="btn btn-danger btn-sm" onclick="this.closest('tr').remove(); updatePrint();">x</button></td>
                 `;
                 tbody.appendChild(row);
@@ -1532,7 +1574,9 @@
             document.getElementById('diagramas-editor-list').innerHTML = '';
             if (data.diagramas) data.diagramas.forEach(diag => addDiagramaRow(diag));
 
-            document.getElementById('print-number').innerText = id.replace('C', '');
+            const printNum = document.getElementById('print-number');
+            if (printNum) printNum.innerText = id.replace('C', '');
+
             updatePrint();
             setStatus(id, false);
             renderHistory();
@@ -1554,10 +1598,10 @@
                 data.items.forEach(item => {
                     const row = document.createElement('tr'); row.className = 'item-row';
                     row.innerHTML = `
-                        <td><input type="number" class="form-control q-input" step="1" value="${item.q}" oninput="updatePrint()"></td>
-                        <td><input type="text" class="form-control unit-input" value="${item.unit}" placeholder="unid" oninput="updatePrint()"></td>
+                        <td><input type="number" class="form-control q-input" step="1" value="${item.q}" oninput="debounceUpdatePrint()"></td>
+                        <td><input type="text" class="form-control unit-input" value="${item.unit}" placeholder="unid" oninput="debounceUpdatePrint()"></td>
                         <td><input type="text" class="form-control desc-input" value="${item.desc}" placeholder="Descripción..." list="products-datalist" oninput="handleItemInput(this)"></td>
-                        <td><input type="number" class="form-control price-input" step="0.01" value="${item.price}" oninput="updatePrint()"></td>
+                        <td><input type="number" class="form-control price-input" step="0.01" value="${item.price}" oninput="debounceUpdatePrint()"></td>
                         <td class="text-center"><button class="btn btn-danger btn-sm" onclick="this.closest('tr').remove(); updatePrint();">x</button></td>
                     `;
                     tbody.appendChild(row);
