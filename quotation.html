@@ -46,7 +46,8 @@
         .invoice-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
+            /* Reduced from 20px */
         }
 
         .company-info img {
@@ -70,14 +71,17 @@
         .client-info-box {
             border: 1.5px solid #000;
             border-radius: 10px;
-            padding: 10px;
-            margin-bottom: 20px;
+            padding: 8px;
+            /* Reduced from 10px */
+            margin-bottom: 10px;
+            /* Reduced from 20px */
         }
 
         .table-invoice {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
+            /* Reduced from 20px */
         }
 
         .table-invoice th,
@@ -141,6 +145,56 @@
             padding: 10px;
             border: 1px solid #eee;
             font-weight: bold;
+        }
+
+        /* Virtual Pagination Styles */
+        .print-page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 10mm 15mm 15mm 15mm;
+            /* Reduced top padding */
+            margin: 2rem auto;
+            background: white;
+            color: black;
+            font-size: 11pt;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+            position: relative;
+            box-sizing: border-box;
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+
+        .page-counter-badge {
+            position: absolute;
+            top: -30px;
+            right: 0;
+            background: #444;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .item-index-col {
+            width: 5%;
+            text-align: center;
+            font-weight: bold;
+            background-color: #f8f9fa;
+        }
+
+        @media print {
+            .print-page {
+                margin: 0 !important;
+                box-shadow: none !important;
+                border: none !important;
+                page-break-after: always !important;
+                break-after: page !important;
+                min-height: 297mm !important;
+            }
+
+            .page-counter-badge {
+                display: none !important;
+            }
         }
 
         @media print {
@@ -230,6 +284,14 @@
                 max-width: 100% !important;
                 page-break-inside: avoid;
             }
+        }
+
+        #print-area {
+            background: transparent;
+            box-shadow: none;
+            padding: 0;
+            width: auto;
+            margin: 0;
         }
 
         .item-row:hover {
@@ -605,7 +667,7 @@
                         <button class="btn btn-outline-primary btn-sm me-2" onclick="openProductManager()">
                             <i class="fa fa-boxes"></i> Gestionar Productos
                         </button>
-                        <button class="btn btn-primary btn-sm text-white" onclick="addItemRow()">+ Agregar Ítem</button>
+                        <button class="btn btn-primary btn-sm text-white" onclick="addRow()">+ Agregar Ítem</button>
                     </div>
                 </div>
                 <!-- Datalist for Product Autocomplete -->
@@ -702,229 +764,47 @@
         </div>
     </div>
 
-    <!-- Print Area (Hidden in UI, Shown in Print) -->
-    <div id="print-area">
-        <div class="invoice-header">
-            <div class="company-logo-area d-flex align-items-center">
-                <img src="img/logo.png" style="width: 100px; height: auto;" alt="Logo"
-                    onerror="this.src='https://via.placeholder.com/80?text=Seer'">
-                <div class="ms-4">
-                    <h2 class="m-0 text-primary fw-bold" style="letter-spacing: 1px;">SEER</h2>
-                    <div style="font-size: 0.95rem; line-height: 1.3;">
-                        <strong class="text-dark">Soluciones para la renovación ambiental y energética
-                            E.I.R.L.</strong><br>
-                        <span id="print-my-address" class="text-muted">San Román Juliaca, Puno,
-                            Perú</span><br>
-                        <span class="text-muted">TELF: <span id="print-my-phone">+51 986 366 440</span></span>
+    <!-- Print Area Container (Pages will be injected here) -->
+    <div id="print-area"></div>
+
+    <!-- Hidden Template for Virtual Pages -->
+    <template id="page-template">
+        <div class="print-page">
+            <div class="page-counter-badge">Página <span class="current-page-num">1</span></div>
+
+            <div class="invoice-header">
+                <div class="company-logo-area d-flex align-items-center">
+                    <img src="img/logo.png" style="width: 100px; height: auto;" alt="Logo"
+                        onerror="this.src='https://via.placeholder.com/80?text=Seer'">
+                    <div class="ms-4">
+                        <h2 class="m-0 text-primary fw-bold" style="letter-spacing: 1px;">SEER</h2>
+                        <div style="font-size: 0.95rem; line-height: 1.3;">
+                            <strong class="text-dark">Soluciones para la renovación ambiental y energética
+                                E.I.R.L.</strong><br>
+                            <span class="print-my-address-ref text-muted"></span><br>
+                            <span class="text-muted">TELF: <span class="print-my-phone-ref"></span></span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="ruc-box">
-                <h5>R.U.C. <span id="print-my-ruc">2061376524</span></h5>
-                <h4 class="bg-light py-2 my-2 border-top border-bottom">COTIZACIÓN</h4>
-                <h5>Nº: C001-<span id="print-number">57</span></h5>
-            </div>
-        </div>
-
-        <div class="client-info-box">
-            <table style="width: 100%;">
-                <tr>
-                    <td style="width: 15%;"><strong>Cliente</strong></td>
-                    <td style="width: 50%;">: <span id="print-cliente"></span></td>
-                    <td style="width: 15%;"><strong>Moneda</strong></td>
-                    <td>: SOLES</td>
-                </tr>
-                <tr>
-                    <td><strong>R.U.C.</strong></td>
-                    <td>: <span id="print-ruc"></span></td>
-                    <td><strong>Fecha</strong></td>
-                    <td>: <span id="print-fecha"></span></td>
-                </tr>
-                <tr>
-                    <td><strong>Dirección</strong></td>
-                    <td>: <span id="print-direccion"></span></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </table>
-        </div>
-
-        <table class="table-invoice">
-            <thead>
-                <tr>
-                    <th style="width: 10%;">Cant.</th>
-                    <th style="width: 10%;">U/M</th>
-                    <th style="width: 55%;">Descripción</th>
-                    <th style="width: 12%;">P. Unitario</th>
-                    <th style="width: 13%;">Importe Total</th>
-                </tr>
-            </thead>
-            <tbody id="print-items-body">
-                <!-- Items inserted here -->
-            </tbody>
-        </table>
-
-        <div class="d-flex justify-content-between">
-            <div style="width: 50%;">
-                <div class="border p-2 rounded mb-2">
-                    <strong>Información adicional:</strong><br>
-                    <small>Cuentas bancarias habilitadas para transferencias.</small>
-                </div>
-                <div>
-                    <strong>SON:</strong> <span id="print-total-words" style="text-transform: uppercase;"></span>
+                <div class="ruc-box">
+                    <h5>R.U.C. <span class="print-my-ruc-ref"></span></h5>
+                    <h4 class="bg-light py-2 my-2 border-top border-bottom">COTIZACIÓN</h4>
+                    <h5>Nº: C001-<span class="print-number-ref"></span></h5>
                 </div>
             </div>
-            <div style="width: 40%;">
-                <table class="totals-table w-100">
-                    <tr>
-                        <td>Venta Gravada</td>
-                        <td class="text-end">S/ <span id="print-subtotal">0.00</span></td>
-                    </tr>
-                    <tr>
-                        <td>Total I.G.V. (18%)</td>
-                        <td class="text-end">S/ <span id="print-igv">0.00</span></td>
-                    </tr>
-                    <tr class="fw-bold bg-light">
-                        <td>Total Precio Venta</td>
-                        <td class="text-end">S/ <span id="print-total">0.00</span></td>
-                    </tr>
-                </table>
-            </div>
-        </div>
 
-        <div class="bank-accounts">
-            <table>
-                <thead>
-                    <tr>
-                        <th colspan="4">"SIRVASE ABONAR EN NUESTRAS CUENTAS"</th>
-                    </tr>
-                    <tr>
-                        <th>BANCO</th>
-                        <th>MONEDA</th>
-                        <th>CUENTA</th>
-                        <th>CCI</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>INTERBANK</td>
-                        <td>SOLES</td>
-                        <td><span id="print-my-bank">322-3007459369</span></td>
-                        <td><span id="print-my-cci">003-322-003007459369-57</span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="text-center mt-3">
-            <strong>"GRACIAS POR SU PREFERENCIA"</strong>
-        </div>
-        <div class="print-footer no-print-screen mt-4">
-            <div class="d-flex justify-content-between small text-muted border-top pt-2">
-                <span>SEER - Cotización - <span class="print-page-number"></span></span>
-                <span class="print-timestamp-placeholder"></span>
-            </div>
-        </div>
-    </div>
+            <!-- Page-specific content will be injected here -->
+            <div class="page-content"></div>
 
-    <!-- Print Description Page -->
-    <div id="print-description-area" class="description-page">
-        <div class="invoice-header">
-            <div class="company-logo-area d-flex align-items-center">
-                <img src="img/logo.png" style="width: 100px; height: auto;" alt="Logo"
-                    onerror="this.src='https://via.placeholder.com/80?text=Seer'">
-                <div class="ms-4">
-                    <h2 class="m-0 text-primary fw-bold" style="letter-spacing: 1px;">SEER</h2>
-                    <div style="font-size: 0.95rem; line-height: 1.3;">
-                        <strong class="text-dark">Soluciones para la renovación ambiental y energética
-                            E.I.R.L.</strong><br>
-                        <span class="print-my-address-ref text-muted">San Román Juliaca, Puno, Perú</span><br>
-                        <span class="text-muted">TELF: <span class="print-my-phone-ref">+51 986 366 440</span></span>
-                    </div>
+            <div class="print-footer no-print-screen mt-auto">
+                <div class="d-flex justify-content-between small text-muted border-top pt-2">
+                    <span class="footer-doc-title">SEER - Cotización</span>
+                    <span class="print-page-number">Página 1</span>
+                    <span class="print-timestamp-placeholder"></span>
                 </div>
             </div>
-            <div class="d-flex align-items-center">
-                <div class="desc-box-header">DESCRIPCIÓN</div>
-            </div>
         </div>
-
-        <div class="equipos-title">EQUIPOS</div>
-        <div class="equipos-container" id="print-equipos-container">
-            <!-- Equipment items will be added here -->
-        </div>
-        <div class="print-footer no-print-screen mt-auto">
-            <div class="d-flex justify-content-between small text-muted border-top pt-2">
-                <span>SEER - Anexo Descripciones - <span class="print-page-number"></span></span>
-                <span class="print-timestamp-placeholder"></span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Print Diagrams Page -->
-    <div id="print-diagrams-area" class="description-page">
-        <div class="invoice-header">
-            <div class="company-logo-area d-flex align-items-center">
-                <img src="img/logo.png" style="width: 100px; height: auto;" alt="Logo"
-                    onerror="this.src='https://via.placeholder.com/80?text=Seer'">
-                <div class="ms-4">
-                    <h2 class="m-0 text-primary fw-bold" style="letter-spacing: 1px;">SEER</h2>
-                    <div style="font-size: 0.95rem; line-height: 1.3;">
-                        <strong class="text-dark">Soluciones para la renovación ambiental y energética
-                            E.I.R.L.</strong><br>
-                        <span class="print-my-address-ref text-muted">San Román Juliaca, Puno, Perú</span><br>
-                        <span class="text-muted">TELF: <span class="print-my-phone-ref">+51 986 366 440</span></span>
-                    </div>
-                </div>
-            </div>
-            <div class="d-flex align-items-center">
-                <div class="desc-box-header text-center" style="font-size: 12pt; padding: 10px 20px;">DIAGRAMAS
-                    Y<br>PLANOS</div>
-            </div>
-        </div>
-
-        <div class="equipos-title">DIAGRAMAS Y PLANOS</div>
-        <div id="print-diagramas-container">
-            <!-- Diagram items will be added here -->
-        </div>
-        <div class="print-footer no-print-screen mt-auto">
-            <div class="d-flex justify-content-between small text-muted border-top pt-2">
-                <span>SEER - Anexo Planos - <span class="print-page-number"></span></span>
-                <span class="print-timestamp-placeholder"></span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Print Garantías Page -->
-    <div id="print-garantias-area" class="description-page">
-        <div class="invoice-header">
-            <div class="company-logo-area d-flex align-items-center">
-                <img src="img/logo.png" style="width: 100px; height: auto;" alt="Logo"
-                    onerror="this.src='https://via.placeholder.com/80?text=Seer'">
-                <div class="ms-4">
-                    <h2 class="m-0 text-primary fw-bold" style="letter-spacing: 1px;">SEER</h2>
-                    <div style="font-size: 0.95rem; line-height: 1.3;">
-                        <strong class="text-dark">Soluciones para la renovación ambiental y energética
-                            E.I.R.L.</strong><br>
-                        <span class="print-my-address-ref text-muted">San Román Juliaca, Puno, Perú</span><br>
-                        <span class="text-muted">TELF: <span class="print-my-phone-ref">+51 986 366 440</span></span>
-                    </div>
-                </div>
-            </div>
-            <div class="d-flex align-items-center">
-                <div class="desc-box-header">GARANTÍAS</div>
-            </div>
-        </div>
-
-        <div class="equipos-title">CONDICIONES Y GARANTÍAS</div>
-        <div class="garantias-content" id="print-garantias-content">
-            <!-- Warranty text will go here -->
-        </div>
-        <div class="print-footer no-print-screen mt-auto">
-            <div class="d-flex justify-content-between small text-muted border-top pt-2">
-                <span>SEER - Términos y Condiciones - <span class="print-page-number"></span></span>
-                <span class="print-timestamp-placeholder"></span>
-            </div>
-        </div>
-    </div>
+    </template>
 
     <!-- Product Manager Modal -->
     <div class="modal fade" id="productManagerModal" tabindex="-1" aria-hidden="true">
@@ -981,39 +861,7 @@
         }
 
         function triggerPrint() {
-            const clientName = document.getElementById('input-cliente').value || 'Cliente';
-            const quoteId = currentQuotationId || 'Draft';
             const originalTitle = document.title;
-
-            // Set dynamic timestamp for footers
-            const now = new Date();
-            const dateStr = now.toLocaleDateString('es-PE');
-            const timeStr = now.toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' });
-            const fullStamp = `${dateStr} ${timeStr}`;
-
-            document.querySelectorAll('.print-timestamp-placeholder').forEach(el => {
-                el.innerText = `Impreso el: ${fullStamp}`;
-            });
-
-            // Dynamic Page Numbering
-            const printableSections = [
-                document.getElementById('print-area'),
-                document.getElementById('print-description-area'),
-                document.getElementById('print-diagrams-area'),
-                document.getElementById('print-garantias-area')
-            ];
-
-            let currentPage = 1;
-            printableSections.forEach(section => {
-                if (section && (section.style.display === 'block' || window.getComputedStyle(section).display === 'block')) {
-                    const pageNumEls = section.querySelectorAll('.print-page-number');
-                    pageNumEls.forEach(el => {
-                        el.innerText = `Página ${currentPage}`;
-                    });
-                    currentPage++;
-                }
-            });
-
             // Set title to space to avoid URL appearing in the browser header
             document.title = ' ';
 
@@ -1052,51 +900,10 @@
             }
         }
 
-        function saveQuotation() {
-            const history = JSON.parse(localStorage.getItem('seer_history') || '[]');
-            const quotationData = {
-                id: currentQuotationId || `C${String(history.length + 1).padStart(3, '0')}`,
-                dateCreated: new Date().toISOString(),
-                company: {
-                    ruc: document.getElementById('input-my-ruc').value,
-                    address: document.getElementById('input-my-address').value,
-                    phone: document.getElementById('input-my-phone').value,
-                    bank: document.getElementById('input-my-bank').value,
-                    cci: document.getElementById('input-my-cci').value
-                },
-                client: {
-                    name: document.getElementById('input-cliente').value,
-                    ruc: document.getElementById('input-ruc').value,
-                    date: document.getElementById('input-fecha').value,
-                    address: document.getElementById('input-direccion').value
-                },
-                items: Array.from(document.querySelectorAll('.item-row')).map(row => ({
-                    q: row.querySelector('.q-input').value,
-                    unit: row.querySelector('.unit-input').value,
-                    desc: row.querySelector('.desc-input').value,
-                    price: row.querySelector('.price-input').value
-                }))
-            };
-
-            if (currentQuotationId) {
-                const index = history.findIndex(q => q.id === currentQuotationId);
-                if (index !== -1) history[index] = quotationData;
-                else history.push(quotationData);
-            } else {
-                history.push(quotationData);
-                currentQuotationId = quotationData.id;
-            }
-
-            localStorage.setItem('seer_history', JSON.stringify(history));
-            setStatus(currentQuotationId, false);
-            document.getElementById('print-number').innerText = currentQuotationId.replace('C', '');
-            renderHistory();
-            alert('Cotización guardada exitosamente.');
-        }
-
         function renderHistory() {
             const history = JSON.parse(localStorage.getItem('seer_history') || '[]');
             const container = document.getElementById('history-container');
+            if (!container) return;
             container.innerHTML = '';
 
             if (history.length === 0) {
@@ -1119,7 +926,7 @@
                         <br><small class="text-muted">${new Date(item.dateCreated).toLocaleDateString()}</small>
                     </div>
                     <div>
-                        <button class="btn btn-sm btn-link text-danger" onclick="deleteHistoryItem('${item.id}')">
+                        <button class="btn btn-sm btn-link text-danger" onclick="deleteHistoryItem(event, '${item.id}')">
                             <i class="fa fa-trash"></i>
                         </button>
                     </div>
@@ -1128,65 +935,8 @@
             });
         }
 
-        function loadQuotation(id) {
-            const history = JSON.parse(localStorage.getItem('seer_history') || '[]');
-            const data = history.find(q => q.id === id);
-            if (!data) return;
-
-            // Load company info
-            document.getElementById('input-my-ruc').value = data.company.ruc;
-            document.getElementById('input-my-address').value = data.company.address;
-            document.getElementById('input-my-phone').value = data.company.phone;
-            document.getElementById('input-my-bank').value = data.company.bank;
-            document.getElementById('input-my-cci').value = data.company.cci;
-
-            // Load client info
-            document.getElementById('input-cliente').value = data.client.name;
-            document.getElementById('input-ruc').value = data.client.ruc;
-            document.getElementById('input-fecha').value = data.client.date;
-            document.getElementById('input-direccion').value = data.client.address;
-
-            // Load items
-            const tbody = document.getElementById('items-body');
-            tbody.innerHTML = '';
-            data.items.forEach(item => {
-                const row = document.createElement('tr');
-                row.className = 'item-row';
-                row.innerHTML = `
-                    <td><input type="number" class="form-control q-input" step="1" value="${item.q}" oninput="updatePrint()"></td>
-                    <td><input type="text" class="form-control unit-input" value="${item.unit}" oninput="updatePrint()"></td>
-                    <td><input type="text" class="form-control desc-input" value="${item.desc}" oninput="updatePrint()"></td>
-                    <td><input type="number" class="form-control price-input" step="0.01" value="${item.price}" oninput="updatePrint()"></td>
-                    <td class="text-center"><button class="btn btn-danger btn-sm" onclick="this.closest('tr').remove(); updatePrint();">x</button></td>
-                `;
-                tbody.appendChild(row);
-            });
-
-            document.getElementById('print-number').innerText = id.replace('C', '');
-            updatePrint();
-            setStatus(id, false);
-            renderHistory();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function newQuotation() {
-            if (isDirty && !confirm('Tienes cambios sin guardar. ¿Deseas continuar?')) return;
-
-            if (confirm('¿Desea crear una nueva cotización? Se limpiarán los campos actuales.')) {
-                document.getElementById('input-cliente').value = '';
-                document.getElementById('input-ruc').value = '';
-                document.getElementById('input-direccion').value = '';
-                document.getElementById('input-fecha').valueAsDate = new Date();
-                document.getElementById('items-body').innerHTML = '';
-                document.getElementById('print-number').innerText = '---';
-                addRow();
-                updatePrint();
-                setStatus(null, true);
-                renderHistory();
-            }
-        }
-
-        function deleteHistoryItem(id) {
+        function deleteHistoryItem(event, id) {
+            if (event) event.stopPropagation();
             if (confirm(`¿Está seguro de eliminar la cotización ${id}?`)) {
                 const history = JSON.parse(localStorage.getItem('seer_history') || '[]');
                 const newHistory = history.filter(q => q.id !== id);
@@ -1196,39 +946,23 @@
             }
         }
 
-        function downloadCurrentJSON() {
-            const data = {
-                id: currentQuotationId || 'Draft',
-                dateCreated: new Date().toISOString(),
-                company: {
-                    ruc: document.getElementById('input-my-ruc').value,
-                    address: document.getElementById('input-my-address').value,
-                    phone: document.getElementById('input-my-phone').value,
-                    bank: document.getElementById('input-my-bank').value,
-                    cci: document.getElementById('input-my-cci').value
-                },
-                client: {
-                    name: document.getElementById('input-cliente').value,
-                    ruc: document.getElementById('input-ruc').value,
-                    date: document.getElementById('input-fecha').value,
-                    address: document.getElementById('input-direccion').value
-                },
-                items: Array.from(document.querySelectorAll('.item-row')).map(row => ({
-                    q: row.querySelector('.q-input').value,
-                    unit: row.querySelector('.unit-input').value,
-                    desc: row.querySelector('.desc-input').value,
-                    price: row.querySelector('.price-input').value
-                }))
-            };
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `cotizacion_${data.id}_${new Date().toISOString().split('T')[0]}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
+        function newQuotation() {
+            if (isDirty && !confirm('Tienes cambios sin guardar. ¿Deseas continuar?')) return;
+            if (confirm('¿Desea crear una nueva cotización? Se limpiarán los campos actuales.')) {
+                document.getElementById('input-cliente').value = '';
+                document.getElementById('input-ruc').value = '';
+                document.getElementById('input-direccion').value = '';
+                document.getElementById('input-fecha').valueAsDate = new Date();
+                document.getElementById('items-body').innerHTML = '';
+                document.getElementById('equipos-editor-list').innerHTML = '';
+                document.getElementById('diagramas-editor-list').innerHTML = '';
+                document.getElementById('print-number').innerText = '---';
+                addRow();
+                updatePrint();
+                setStatus(null, true);
+                renderHistory();
+            }
         }
-
         function exportHistory() {
             const history = localStorage.getItem('seer_history') || '[]';
             const blob = new Blob([history], { type: 'application/json' });
@@ -1262,7 +996,7 @@
 
         // --- END STORAGE LOGIC ---
 
-        function addItemRow() {
+        function addRow() {
             const tbody = document.getElementById('items-body');
             const row = document.createElement('tr');
             row.className = 'item-row';
@@ -1280,11 +1014,11 @@
         function handleItemInput(input) {
             updatePrint();
             // Autocomplete check
-            const val = input.value.trim();
+            const val = input.value.trim().toLowerCase();
             if (!val) return;
 
             const products = JSON.parse(localStorage.getItem('seer_products') || '[]');
-            const product = products.find(p => p.desc.trim() === val);
+            const product = products.find(p => p.desc.trim().toLowerCase() === val);
             if (product) {
                 const row = input.closest('tr');
                 row.querySelector('.unit-input').value = product.unit;
@@ -1293,80 +1027,8 @@
             }
         }
 
-        function updatePrint() {
-            // Mark as dirty when changes occur (if not already dirty)
-            if (!isDirty && document.readyState === 'complete') {
-                setStatus(currentQuotationId, true);
-            }
-
-            // Sync company info
-            document.getElementById('print-my-ruc').innerText = document.getElementById('input-my-ruc').value;
-            document.getElementById('print-my-address').innerText = document.getElementById('input-my-address').value;
-            document.getElementById('print-my-phone').innerText = document.getElementById('input-my-phone').value;
-            document.getElementById('print-my-bank').innerText = document.getElementById('input-my-bank').value;
-            document.getElementById('print-my-cci').innerText = document.getElementById('input-my-cci').value;
-
-            // Sync values from editor inputs to print view
-            document.getElementById('print-cliente').innerText = document.getElementById('input-cliente').value;
-            document.getElementById('print-ruc').innerText = document.getElementById('input-ruc').value;
-            document.getElementById('print-fecha').innerText = document.getElementById('input-fecha').value;
-            document.getElementById('print-direccion').innerText = document.getElementById('input-direccion').value;
-
-            // Sync items
-            const rows = document.querySelectorAll('.item-row');
-            const printTbody = document.getElementById('print-items-body');
-            printTbody.innerHTML = '';
-
-            let total = 0;
-            rows.forEach(row => {
-                const q = parseFloat(row.querySelector('.q-input').value) || 0;
-                const unit = row.querySelector('.unit-input').value;
-                const desc = row.querySelector('.desc-input').value;
-                const price = parseFloat(row.querySelector('.price-input').value) || 0;
-                const sub = q * price;
-                total += sub;
-
-                if (desc) { // Only add to print if has description
-                    const pRow = document.createElement('tr');
-                    pRow.innerHTML = `
-                        <td>${q.toFixed(0)}</td>
-                        <td>${unit}</td>
-                        <td class="text-start">${desc}</td>
-                        <td>${price.toFixed(2)}</td>
-                        <td>${sub.toFixed(2)}</td>
-                    `;
-                    printTbody.appendChild(pRow);
-                }
-            });
-
-            const igv = total * 0.18;
-            const gravada = total / 1.18; // Traditional calculation: Total includes IGV
-            // Actually usually Price is Unitary + IGV or Subtotal + IGV. 
-            // In the image: Venta Gravada + IGV = Total.
-            // Let's assume input price is WITHOUT IGV for simplicity in this calculation.
-
-            const totalIGV = total * 0.18;
-            const totalFinal = total + totalIGV;
-
-            document.getElementById('print-subtotal').innerText = total.toFixed(2);
-            document.getElementById('print-igv').innerText = totalIGV.toFixed(2);
-            document.getElementById('print-total').innerText = totalFinal.toFixed(2);
-
-            // Decimal to words (Simplified)
-            document.getElementById('print-total-words').innerText = numberToSpanish(totalFinal);
-        }
-
-        // Add 1 default row
-        addItemRow();
-
-        // Set today's date
-        document.getElementById('input-fecha').valueAsDate = new Date();
-
-        // Initial render
-        renderHistory();
-
         function numberToSpanish(n) {
-            // Simplified version for the demo
+            // Simplified version
             return n.toLocaleString('es-PE', { minimumFractionDigits: 2 }) + " SOLES";
         }
 
@@ -1503,135 +1165,245 @@
             localStorage.setItem('seer_draft', JSON.stringify(draftData));
         }
 
-        // Global Update function
+        // --- VIRTUAL PAGINATION ENGINE ---
         function updatePrint() {
-            // Mark as dirty
             if (!isDirty && document.readyState === 'complete') {
                 setStatus(currentQuotationId, true);
             }
 
-            // Sync company info
-            const myRuc = document.getElementById('input-my-ruc').value;
-            const myAddr = document.getElementById('input-my-address').value;
-            const myPhone = document.getElementById('input-my-phone').value;
-            const myBank = document.getElementById('input-my-bank').value;
-            const myCci = document.getElementById('input-my-cci').value;
+            const printArea = document.getElementById('print-area');
+            printArea.innerHTML = ''; // Clear previous preview
 
-            document.getElementById('print-my-ruc').innerText = myRuc;
-            document.getElementById('print-my-address').innerText = myAddr;
-            document.getElementById('print-my-phone').innerText = myPhone;
-            document.getElementById('print-my-bank').innerText = myBank;
-            document.getElementById('print-my-cci').innerText = myCci;
+            let globalPageCount = 0;
+            const now = new Date();
+            const timestamp = `${now.toLocaleDateString('es-PE')} ${now.toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' })}`;
 
-            // Sync to other pages refs
-            document.querySelectorAll('.print-my-address-ref').forEach(el => el.innerText = myAddr);
-            document.querySelectorAll('.print-my-phone-ref').forEach(el => el.innerText = myPhone);
+            // Data sources
+            const companyInfo = {
+                ruc: document.getElementById('input-my-ruc').value,
+                address: document.getElementById('input-my-address').value,
+                phone: document.getElementById('input-my-phone').value,
+                bank: document.getElementById('input-my-bank').value,
+                cci: document.getElementById('input-my-cci').value,
+                number: currentQuotationId ? currentQuotationId.replace('C', '') : '---'
+            };
 
-            // Sync client info
-            document.getElementById('print-cliente').innerText = document.getElementById('input-cliente').value;
-            document.getElementById('print-ruc').innerText = document.getElementById('input-ruc').value;
-            document.getElementById('print-fecha').innerText = document.getElementById('input-fecha').value;
-            document.getElementById('print-direccion').innerText = document.getElementById('input-direccion').value;
+            const clientInfo = {
+                name: document.getElementById('input-cliente').value,
+                ruc: document.getElementById('input-ruc').value,
+                date: document.getElementById('input-fecha').value,
+                address: document.getElementById('input-direccion').value
+            };
 
-            // Sync Items Table
-            const rows = document.querySelectorAll('.item-row');
-            const printTbody = document.getElementById('print-items-body');
-            printTbody.innerHTML = '';
-            let total = 0;
-            rows.forEach(row => {
-                const q = parseFloat(row.querySelector('.q-input').value) || 0;
-                const unit = row.querySelector('.unit-input').value;
-                const desc = row.querySelector('.desc-input').value;
-                const price = parseFloat(row.querySelector('.price-input').value) || 0;
-                const sub = q * price;
-                total += sub;
-                if (desc) {
-                    const pRow = document.createElement('tr');
-                    pRow.innerHTML = `<td>${q.toFixed(0)}</td><td>${unit}</td><td class="text-start">${desc}</td><td>${price.toFixed(2)}</td><td>${sub.toFixed(2)}</td>`;
-                    printTbody.appendChild(pRow);
-                }
-            });
+            const items = Array.from(document.querySelectorAll('.item-row')).map(row => ({
+                q: row.querySelector('.q-input').value,
+                unit: row.querySelector('.unit-input').value,
+                desc: row.querySelector('.desc-input').value,
+                price: row.querySelector('.price-input').value
+            })).filter(i => i.desc.trim() !== '');
 
-            const totalIGV = total * 0.18;
-            const totalFinal = total + totalIGV;
-            document.getElementById('print-subtotal').innerText = total.toFixed(2);
-            document.getElementById('print-igv').innerText = totalIGV.toFixed(2);
-            document.getElementById('print-total').innerText = totalFinal.toFixed(2);
-            document.getElementById('print-total-words').innerText = numberToSpanish(totalFinal);
+            const equipos = Array.from(document.querySelectorAll('.equipo-editor-item')).map(item => ({
+                img: item.querySelector('.thumb-preview').src,
+                desc: item.querySelector('.equipo-desc-input').value
+            })).filter(e => e.desc.trim() !== '');
 
-            // Sync Equipos (Page 2)
-            const equipoPrintContainer = document.getElementById('print-equipos-container');
-            const equipoPrintArea = document.getElementById('print-description-area');
-            const equipoEditors = document.querySelectorAll('.equipo-editor-item');
-            equipoPrintContainer.innerHTML = '';
-            let hasEquipos = false;
+            const diagramas = Array.from(document.querySelectorAll('.diagrama-editor-item')).map(item => ({
+                img: item.querySelector('img').src,
+                desc: item.querySelector('.diag-desc-input').value
+            })).filter(d => d.desc.trim() !== '');
 
-            equipoEditors.forEach(editor => {
-                const imgSrc = editor.querySelector('.thumb-preview').src;
-                const desc = editor.querySelector('.equipo-desc-input').value.trim();
-                const isPlaceholder = imgSrc.includes('placeholder.com');
-                if (desc || !isPlaceholder) {
-                    hasEquipos = true;
-                    const div = document.createElement('div'); div.className = 'equipo-item';
-                    div.innerHTML = `<div class="equipo-img"><img src="${imgSrc}"></div><div class="equipo-text">${desc.replace(/\n/g, '<br>')}</div>`;
-                    equipoPrintContainer.appendChild(div);
-                }
-            });
+            const garantiaText = document.getElementById('input-garantias').value;
 
-            if (hasEquipos) {
-                equipoPrintArea.style.display = 'block';
-                // Add conditional page break
-                if (!equipoPrintArea.querySelector('.page-break')) {
-                    const pb = document.createElement('div'); pb.className = 'page-break no-print-screen';
-                    equipoPrintArea.prepend(pb);
-                }
-            } else {
-                equipoPrintArea.style.display = 'none';
+            // PAGE CREATOR HELPER
+            function createPage(docSubtitle) {
+                globalPageCount++;
+                const template = document.getElementById('page-template');
+                const clone = template.content.cloneNode(true);
+                const page = clone.querySelector('.print-page');
+
+                // Sync Company Info
+                page.querySelector('.print-my-address-ref').innerText = companyInfo.address;
+                page.querySelector('.print-my-phone-ref').innerText = companyInfo.phone;
+                page.querySelector('.print-my-ruc-ref').innerText = companyInfo.ruc;
+                page.querySelector('.print-number-ref').innerText = companyInfo.number;
+
+                // Sync Page Tracking
+                page.querySelector('.current-page-num').innerText = globalPageCount;
+                page.querySelector('.footer-doc-title').innerText = `SEER - ${docSubtitle}`;
+                page.querySelector('.print-page-number').innerText = `Página ${globalPageCount}`;
+                page.querySelector('.print-timestamp-placeholder').innerText = `Impreso el: ${timestamp}`;
+
+                printArea.appendChild(page);
+                return page.querySelector('.page-content');
             }
 
-            // Sync Diagramas (Page 3)
-            const diagPrintContainer = document.getElementById('print-diagramas-container');
-            const diagPrintArea = document.getElementById('print-diagrams-area');
-            const diagEditors = document.querySelectorAll('.diagrama-editor-item');
-            diagPrintContainer.innerHTML = '';
-            let hasDiagramas = false;
+            // --- SECTION 1: ITEMS & TOTALS ---
+            let itemIndex = 1;
+            let currentContent = createPage("Cotización");
 
-            diagEditors.forEach(editor => {
-                const imgSrc = editor.querySelector('img').src;
-                const desc = editor.querySelector('.diag-desc-input').value.trim();
-                const isPlaceholder = imgSrc.includes('placeholder.com');
-                if (desc || !isPlaceholder) {
-                    hasDiagramas = true;
-                    const div = document.createElement('div'); div.className = 'diagram-item';
-                    div.innerHTML = `<div class="diagram-img"><img src="${imgSrc}"></div><div class="diagram-text">${desc.replace(/\n/g, '<br>')}</div>`;
-                    diagPrintContainer.appendChild(div);
+            // Add Client Info (Page 1 Only)
+            const clientDiv = document.createElement('div');
+            clientDiv.className = 'client-info-box';
+            clientDiv.innerHTML = `
+                <table style="width: 100%;">
+                    <tr><td style="width: 15%;"><strong>Cliente</strong></td><td style="width: 50%;">: ${clientInfo.name}</td><td style="width: 15%;"><strong>Moneda</strong></td><td>: SOLES</td></tr>
+                    <tr><td><strong>R.U.C.</strong></td><td>: ${clientInfo.ruc}</td><td><strong>Fecha</strong></td><td>: ${clientInfo.date}</td></tr>
+                    <tr><td><strong>Dirección</strong></td><td>: ${clientInfo.address}</td><td></td><td></td></tr>
+                </table>`;
+            currentContent.appendChild(clientDiv);
+
+            // Table Wrapper
+            let currentTable = document.createElement('table');
+            currentTable.className = 'table-invoice';
+            currentTable.innerHTML = `<thead><tr><th style="width: 5%;">N°</th><th style="width: 10%;">Cant.</th><th style="width: 10%;">U/M</th><th style="width: 50%;">Descripción</th><th style="width: 12%;">P. Unitario</th><th style="width: 13%;">Total</th></tr></thead><tbody class="items-tbody"></tbody>`;
+            currentContent.appendChild(currentTable);
+            let currentTbody = currentTable.querySelector('.items-tbody');
+
+            let subtotal = 0;
+            const rowsPerPage = 15; // Strict limit for Page 1 with client info
+            const rowsPerSubsequentPage = 18; // Strict limit for P2+
+
+            items.forEach((item, idx) => {
+                const q = parseFloat(item.q) || 0;
+                const price = parseFloat(item.price) || 0;
+                const total = q * price;
+                subtotal += total;
+
+                // Check for page break BEFORE adding the row
+                const isPage1 = globalPageCount === 1;
+                const limit = isPage1 ? rowsPerPage : rowsPerSubsequentPage;
+
+                if (currentTbody.children.length >= limit) {
+                    currentContent = createPage("Cotización (Cont.)");
+                    currentTable = document.createElement('table');
+                    currentTable.className = 'table-invoice';
+                    currentTable.innerHTML = `<thead><tr><th style="width: 5%;">N°</th><th style="width: 10%;">Cant.</th><th style="width: 10%;">U/M</th><th style="width: 50%;">Descripción</th><th style="width: 12%;">P. Unitario</th><th style="width: 13%;">Total</th></tr></thead><tbody class="items-tbody"></tbody>`;
+                    currentContent.appendChild(currentTable);
+                    currentTbody = currentTable.querySelector('.items-tbody');
                 }
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td class="item-index-col">${itemIndex++}</td><td>${q}</td><td>${item.unit}</td><td class="text-start">${item.desc}</td><td>${price.toFixed(2)}</td><td>${total.toFixed(2)}</td>`;
+                currentTbody.appendChild(tr);
             });
 
-            if (hasDiagramas) {
-                diagPrintArea.style.display = 'block';
-                if (!diagPrintArea.querySelector('.page-break')) {
-                    const pb = document.createElement('div'); pb.className = 'page-break no-print-screen';
-                    diagPrintArea.prepend(pb);
+            // --- DEDICATED TOTALS PAGE ---
+            // Requirement: Always on a new page, repeat logo and client info
+            currentContent = createPage("Resumen Total");
+
+            // Add Client Info to Totals Page
+            const clientDivTotal = document.createElement('div');
+            clientDivTotal.className = 'client-info-box';
+            clientDivTotal.innerHTML = `
+                <table style="width: 100%;">
+                    <tr><td style="width: 15%;"><strong>Cliente</strong></td><td style="width: 50%;">: ${clientInfo.name}</td><td style="width: 15%;"><strong>Moneda</strong></td><td>: SOLES</td></tr>
+                    <tr><td><strong>R.U.C.</strong></td><td>: ${clientInfo.ruc}</td><td><strong>Fecha</strong></td><td>: ${clientInfo.date}</td></tr>
+                    <tr><td><strong>Dirección</strong></td><td>: ${clientInfo.address}</td><td></td><td></td></tr>
+                </table>`;
+            currentContent.appendChild(clientDivTotal);
+
+            const totalFinal = subtotal * 1.18;
+            const totalsDiv = document.createElement('div');
+            totalsDiv.className = 'd-flex justify-content-between mt-3';
+            totalsDiv.innerHTML = `
+                <div style="width: 50%;">
+                    <div class="border p-2 rounded mb-2"><strong>Información adicional:</strong><br><small>Cuentas bancarias habilitadas para transferencias.</small></div>
+                    <div><strong>SON:</strong> <span style="text-transform: uppercase;">${numberToSpanish(totalFinal)}</span></div>
+                </div>
+                <div style="width: 40%;">
+                    <table class="totals-table w-100">
+                        <tr><td>Venta Gravada</td><td class="text-end">S/ ${subtotal.toFixed(2)}</td></tr>
+                        <tr><td>Total I.G.V. (18%)</td><td class="text-end">S/ ${(subtotal * 0.18).toFixed(2)}</td></tr>
+                        <tr class="fw-bold bg-light"><td>Total Precio Venta</td><td class="text-end">S/ ${totalFinal.toFixed(2)}</td></tr>
+                    </table>
+                </div>`;
+            currentContent.appendChild(totalsDiv);
+
+            const bankDiv = document.createElement('div');
+            bankDiv.className = 'bank-accounts mt-3';
+            bankDiv.innerHTML = `
+                <table><thead><tr><th colspan="4">"SIRVASE ABONAR EN NUESTRAS CUENTAS"</th></tr><tr><th style="width: 25%;">BANCO</th><th style="width: 15%;">MONEDA</th><th style="width: 30%;">CUENTA</th><th style="width: 30%;">CCI</th></tr></thead>
+                <tbody><tr><td>INTERBANK</td><td>SOLES</td><td>${companyInfo.bank}</td><td>${companyInfo.cci}</td></tr></tbody></table>
+                <div class="text-center mt-3"><strong>"GRACIAS POR SU PREFERENCIA"</strong></div>`;
+            currentContent.appendChild(bankDiv);
+
+            // --- SECTION 2: EQUIPOS ---
+            if (equipos.length > 0) {
+                let eqIndex = 1;
+                currentContent = createPage("Anexo: Equipos");
+
+                function addEquipoHeaders(content) {
+                    const hb = document.createElement('div');
+                    hb.className = 'd-flex align-items-center mb-3';
+                    hb.innerHTML = '<div class="desc-box-header">DESCRIPCIÓN</div>';
+                    content.appendChild(hb);
+                    const st = document.createElement('div');
+                    st.className = 'equipos-title';
+                    st.innerText = "DESCRIPCIÓN DE EQUIPOS";
+                    content.appendChild(st);
+                    const ec = document.createElement('div');
+                    ec.className = 'equipos-container';
+                    content.appendChild(ec);
+                    return ec;
                 }
-            } else {
-                diagPrintArea.style.display = 'none';
+
+                let currentEqContainer = addEquipoHeaders(currentContent);
+
+                equipos.forEach((eq, idx) => {
+                    if (idx > 0 && idx % 3 === 0) {
+                        currentContent = createPage("Anexo: Equipos (Cont.)");
+                        currentEqContainer = addEquipoHeaders(currentContent);
+                    }
+                    const eqItem = document.createElement('div');
+                    eqItem.className = 'equipo-item';
+                    eqItem.innerHTML = `<div class="equipo-img"><img src="${eq.img}"></div><div class="equipo-text"><strong>EQUIPO ${eqIndex++}</strong><br>${eq.desc.replace(/\n/g, '<br>')}</div>`;
+                    currentEqContainer.appendChild(eqItem);
+                });
             }
 
-            // Sync Garantías (Page 4)
-            const garantiaText = document.getElementById('input-garantias').value.trim();
-            const garantiaPrintContent = document.getElementById('print-garantias-content');
-            const garantiaPrintArea = document.getElementById('print-garantias-area');
+            // --- SECTION 3: DIAGRAMAS ---
+            if (diagramas.length > 0) {
+                let diagIndex = 1;
+                currentContent = createPage("Anexo: Planos");
 
-            if (garantiaText) {
-                garantiaPrintContent.innerText = garantiaText;
-                garantiaPrintArea.style.display = 'block';
-                if (!garantiaPrintArea.querySelector('.page-break')) {
-                    const pb = document.createElement('div'); pb.className = 'page-break no-print-screen';
-                    garantiaPrintArea.prepend(pb);
+                function addDiagHeader(content) {
+                    const dh = document.createElement('div');
+                    dh.className = 'd-flex align-items-center mb-3';
+                    dh.innerHTML = '<div class="desc-box-header">DIAGRAMAS Y PLANOS</div>';
+                    content.appendChild(dh);
                 }
-            } else {
-                garantiaPrintArea.style.display = 'none';
+
+                addDiagHeader(currentContent);
+
+                diagramas.forEach((diag, idx) => {
+                    if (idx > 0) {
+                        currentContent = createPage("Anexo: Planos (Cont.)");
+                        addDiagHeader(currentContent);
+                    }
+                    const diagItem = document.createElement('div');
+                    diagItem.className = 'diagram-item';
+                    diagItem.innerHTML = `<div class="equipos-title">PLANO ${diagIndex++}</div><div class="p-3 text-center"><img src="${diag.img}" style="max-height: 480px; width: auto;"></div><div class="diagram-text">${diag.desc.replace(/\n/g, '<br>')}</div>`;
+                    currentContent.appendChild(diagItem);
+                });
+            }
+
+            // --- SECTION 4: GARANTIAS ---
+            if (garantiaText.trim()) {
+                currentContent = createPage("Condiciones & Garantías");
+                const garHeader = document.createElement('div');
+                garHeader.className = 'd-flex align-items-center mb-3';
+                garHeader.innerHTML = '<div class="desc-box-header">GARANTÍAS</div>';
+                currentContent.appendChild(garHeader);
+
+                const garSubTitle = document.createElement('div');
+                garSubTitle.className = 'equipos-title';
+                garSubTitle.innerText = "CONDICIONES Y GARANTÍAS";
+                currentContent.appendChild(garSubTitle);
+
+                const garContent = document.createElement('div');
+                garContent.className = 'garantias-content';
+                garContent.innerHTML = garantiaText.replace(/\n/g, '<br>');
+                currentContent.appendChild(garContent);
             }
 
             saveDraft();
@@ -1639,55 +1411,73 @@
 
         // Global Save function
         function saveQuotation() {
-            const history = JSON.parse(localStorage.getItem('seer_history') || '[]');
-            const quotationData = {
-                id: currentQuotationId || `C${String(history.length + 1).padStart(3, '0')}`,
-                dateCreated: new Date().toISOString(),
-                company: {
-                    ruc: document.getElementById('input-my-ruc').value,
-                    address: document.getElementById('input-my-address').value,
-                    phone: document.getElementById('input-my-phone').value,
-                    bank: document.getElementById('input-my-bank').value,
-                    cci: document.getElementById('input-my-cci').value
-                },
-                client: {
-                    name: document.getElementById('input-cliente').value,
-                    ruc: document.getElementById('input-ruc').value,
-                    date: document.getElementById('input-fecha').value,
-                    address: document.getElementById('input-direccion').value
-                },
-                items: Array.from(document.querySelectorAll('.item-row')).map(row => ({
-                    q: row.querySelector('.q-input').value,
-                    unit: row.querySelector('.unit-input').value,
-                    desc: row.querySelector('.desc-input').value,
-                    price: row.querySelector('.price-input').value
-                })),
-                equipos: Array.from(document.querySelectorAll('.equipo-editor-item')).map(item => ({
-                    img: item.querySelector('.thumb-preview').src,
-                    desc: item.querySelector('.equipo-desc-input').value
-                })),
-                diagramas: Array.from(document.querySelectorAll('.diagrama-editor-item')).map(item => ({
-                    img: item.querySelector('img').src,
-                    desc: item.querySelector('.diag-desc-input').value
-                })),
-                garantias: document.getElementById('input-garantias').value
-            };
+            try {
+                const history = JSON.parse(localStorage.getItem('seer_history') || '[]');
 
-            if (currentQuotationId) {
-                const index = history.findIndex(q => q.id === currentQuotationId);
-                if (index !== -1) history[index] = quotationData;
-                else history.push(quotationData);
-            } else {
-                history.push(quotationData);
-                currentQuotationId = quotationData.id;
+                // Essential element checks
+                const getVal = (id) => {
+                    const el = document.getElementById(id);
+                    if (!el) throw new Error(`Elemento no encontrado: ${id}`);
+                    return el.value;
+                };
+
+                const quotationData = {
+                    id: currentQuotationId || `C${String(history.length + 1).padStart(3, '0')}`,
+                    dateCreated: new Date().toISOString(),
+                    company: {
+                        ruc: getVal('input-my-ruc'),
+                        address: getVal('input-my-address'),
+                        phone: getVal('input-my-phone'),
+                        bank: getVal('input-my-bank'),
+                        cci: getVal('input-my-cci')
+                    },
+                    client: {
+                        name: getVal('input-cliente'),
+                        ruc: getVal('input-ruc'),
+                        date: getVal('input-fecha'),
+                        address: getVal('input-direccion')
+                    },
+                    items: Array.from(document.querySelectorAll('.item-row')).map(row => {
+                        const q = row.querySelector('.q-input');
+                        const unit = row.querySelector('.unit-input');
+                        const desc = row.querySelector('.desc-input');
+                        const price = row.querySelector('.price-input');
+                        if (!q || !unit || !desc || !price) throw new Error("Error en estructura de filas de ítems");
+                        return { q: q.value, unit: unit.value, desc: desc.value, price: price.value };
+                    }),
+                    equipos: Array.from(document.querySelectorAll('.equipo-editor-item')).map(item => ({
+                        img: item.querySelector('.thumb-preview').src,
+                        desc: item.querySelector('.equipo-desc-input').value
+                    })),
+                    diagramas: Array.from(document.querySelectorAll('.diagrama-editor-item')).map(item => ({
+                        img: item.querySelector('img').src,
+                        desc: item.querySelector('.diag-desc-input').value
+                    })),
+                    garantias: getVal('input-garantias')
+                };
+
+                if (currentQuotationId) {
+                    const index = history.findIndex(q => q.id === currentQuotationId);
+                    if (index !== -1) history[index] = quotationData;
+                    else history.push(quotationData);
+                } else {
+                    history.push(quotationData);
+                    currentQuotationId = quotationData.id;
+                }
+
+                localStorage.setItem('seer_history', JSON.stringify(history));
+                localStorage.removeItem('seer_draft');
+                setStatus(currentQuotationId, false);
+
+                const printNum = document.getElementById('print-number');
+                if (printNum) printNum.innerText = currentQuotationId.replace('C', '');
+
+                renderHistory();
+                alert('Cotización guardada exitosamente.');
+            } catch (err) {
+                console.error("Save Error:", err);
+                alert('Error al guardar: ' + err.message);
             }
-
-            localStorage.setItem('seer_history', JSON.stringify(history));
-            localStorage.removeItem('seer_draft');
-            setStatus(currentQuotationId, false);
-            document.getElementById('print-number').innerText = currentQuotationId.replace('C', '');
-            renderHistory();
-            alert('Cotización guardada exitosamente.');
         }
 
         // Global Load function
@@ -1764,12 +1554,15 @@
                 setStatus(null, true);
             }
 
-            // Load Product DB
+            // Initial render
+            addRow();
             loadProductDB();
+            renderHistory();
         });
 
         // --- PRODUCT DATABASE LOGIC ---
         function openProductManager() {
+            loadProductDB(); // Sync before opening
             const modal = new bootstrap.Modal(document.getElementById('productManagerModal'));
             modal.show();
             renderProductList();
