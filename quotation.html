@@ -150,7 +150,8 @@
         /* Virtual Pagination Styles */
         .print-page {
             width: 210mm;
-            height: 297mm;
+            height: 296mm;
+            /* 1mm safety margin to avoid rounding overflows */
             padding: 10mm 15mm 15mm 15mm;
             margin: 2rem auto;
             background: white;
@@ -181,14 +182,18 @@
         }
 
         @media print {
+            @page {
+                size: A4;
+                margin: 0 !important;
+            }
+
             .print-page {
                 margin: 0 !important;
                 box-shadow: none !important;
                 border: none !important;
-                page-break-after: always !important;
-                break-after: page !important;
-                height: 297mm !important;
+                height: 296mm !important;
                 width: 210mm !important;
+                /* page-break removed here to be handled by JS */
             }
 
             .page-counter-badge {
@@ -209,8 +214,10 @@
                 box-shadow: none !important;
                 margin: 0 !important;
                 padding: 0 !important;
-                width: 210mm !important;
-                display: block !important;
+                width: 100% !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
                 visibility: visible !important;
             }
 
@@ -1214,6 +1221,13 @@
 
             // PAGE CREATOR HELPER
             function createPage(docSubtitle) {
+                // ADD PAGE BREAK TO PREVIOUS PAGE (If exists)
+                const lastPage = printArea.querySelector('.print-page:last-child');
+                if (lastPage) {
+                    lastPage.style.pageBreakAfter = 'always';
+                    lastPage.style.breakAfter = 'page';
+                }
+
                 globalPageCount++;
                 const template = document.getElementById('page-template');
                 const clone = template.content.cloneNode(true);
