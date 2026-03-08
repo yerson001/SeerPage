@@ -161,6 +161,8 @@
             position: relative;
             box-sizing: border-box;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         .page-counter-badge {
@@ -193,7 +195,8 @@
                 border: none !important;
                 height: 296mm !important;
                 width: 210mm !important;
-                /* page-break removed here to be handled by JS */
+                display: flex !important;
+                flex-direction: column !important;
             }
 
             .page-counter-badge {
@@ -425,7 +428,8 @@
 
         .equipo-img img {
             max-width: 100%;
-            max-height: 150px;
+            max-height: 140px;
+            /* Reduced slightly to fit 4 per page with footer */
             border-radius: 8px;
         }
 
@@ -1362,7 +1366,7 @@
                 let currentEqContainer = addEquipoHeaders(currentContent);
 
                 equipos.forEach((eq, idx) => {
-                    if (idx > 0 && idx % 3 === 0) {
+                    if (idx > 0 && idx % 4 === 0) {
                         currentContent = createPage("Anexo: Equipos (Cont.)");
                         currentEqContainer = addEquipoHeaders(currentContent);
                     }
