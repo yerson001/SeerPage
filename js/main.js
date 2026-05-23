@@ -151,7 +151,7 @@
         var service = $(this).find('select').val() || 'No especificado';
         var message = $(this).find('textarea').val();
 
-        var text = 'Hola SRAE, soy ' + name + '.%0A' +
+        var text = 'Hola SRAE PERU, soy ' + name + '.%0A' +
                    'Email: ' + email + '%0A' +
                    'Teléfono: ' + phone + '%0A' +
                    'Servicio: ' + service + '%0A' +
