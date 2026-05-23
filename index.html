@@ -96,32 +96,41 @@
     </div>
 
     <!-- Navbar / Topbar -->
-    <nav class="navbar navbar-expand fixed-top">
-        <div class="container">
-                    <a class="navbar-brand" href="#">
-                <img src="img/logo.png" alt="SRAE PERU Logo">
-                <span>SRAE PERU</span>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container-fluid px-lg-4">
+            <a class="navbar-brand" href="#">
+                <img src="img/logo.png" alt="SRAE PERU">
+                <span>SRAE Perú</span>
             </a>
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link active" href="#hero">Inicio</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#about">Nosotros</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#services">Servicios</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#contact">Contacto</a>
-                </li>
-            </ul>
-            <a href="https://wa.me/51986366440?text=Hola%20SRAE%20PERU%2C%20quiero%20una%20cotizaci%C3%B3n" target="_blank" class="btn btn-accent btn-cotizar"><i class="fab fa-whatsapp me-2"></i><span class="btn-text">Solicitar Cotización Gratis</span></a>
-            <div class="theme-toggle">
-                <button id="themeSwitch" class="theme-btn" aria-label="Cambiar tema">
-                    <i class="fas fa-sun"></i>
-                    <i class="fas fa-moon"></i>
-                </button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Abrir menú">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarMain">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#hero">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">Nosotros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services">Servicios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contacto</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center gap-2 ms-lg-3">
+                    <a href="https://wa.me/51986366440?text=Hola%20SRAE%20PERU%2C%20quiero%20una%20cotizaci%C3%B3n" target="_blank" class="btn btn-accent btn-cotizar">
+                        <i class="fab fa-whatsapp me-2"></i>Solicitar Cotización Gratis
+                    </a>
+                    <div class="theme-toggle">
+                        <button id="themeSwitch" class="theme-btn" aria-label="Cambiar tema">
+                            <i class="fas fa-sun"></i>
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>

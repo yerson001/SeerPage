@@ -80,7 +80,8 @@
             $('html, body').stop().animate({
                 scrollTop: target.offset().top - navbarHeight - 10
             }, 800, 'easeInOutExpo');
-
+            // Close hamburger on mobile
+            $('#navbarMain').collapse('hide');
         }
     });
 
