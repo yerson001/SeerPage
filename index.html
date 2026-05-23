@@ -1,604 +1,607 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="utf-8">
-    <title>Seer - Energía Renovable y Sostenible</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta
-        content="Seer, Energía Renovable, Paneles Solares, Termas Solares, Energía Solar Perú, Juliaca, Puno, Sostenibilidad"
-        name="keywords">
-    <meta
-        content="Seer - Soluciones líderes en energía renovable en Perú. Especialistas en paneles solares, termas solares y sistemas de bombeo solar para residencias e industrias."
-        name="description">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SRAE - Energía Renovable & Sostenible</title>
+    <meta name="description" content="SRAE - Soluciones en energía solar, paneles solares, sistemas off-grid y on-grid. Transformamos el futuro energético con innovación y sostenibilidad.">
+    <meta name="keywords" content="energía solar, paneles solares, energía renovable, SRAE, instalación solar, ahorro energético">
 
-    <meta name="google-site-verification" content="uSPUebCp43SNoTJCqNJtbkgEkjR58TSy4n0SIhzM3sQ" />
     <!-- Favicon -->
-    <link href="img/water.png" rel="icon" type="image/x-icon">
-    <!-- Google Web Fonts -->
+    <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/genfavicon-180.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/genfavicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/genfavicon-16.png">
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&family=Roboto:wght@500;700;900&display=swap"
-        rel="stylesheet">
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Libraries Stylesheet -->
-    <link href="lib/animate/animate.min.css" rel="stylesheet">
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <!-- Template Stylesheet -->
-    <link href="css/style.css" rel="stylesheet">
-    <style>
-        .text-primary {
-            color: #32CD32;
-            /* Verde claro */
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Libraries CSS -->
+    <link rel="stylesheet" href="lib/animate/animate.min.css">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
-    <!-- Spinner Start -->
-    <div id="spinner"
-        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-            <span class="sr-only">Loading...</span>
+
+    <!-- Spinner -->
+    <div id="spinner" class="show position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="z-index: 9999; background: var(--dark);">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
         </div>
     </div>
-    <!-- Spinner End -->
 
-
-    <!-- Topbar Start -->
-    <div class="container-fluid bg-dark p-0">
-        <div class="row gx-0 d-none d-lg-flex">
-            <div class="col-lg-7 px-5 text-start">
-                <div class="h-100 d-inline-flex align-items-center me-4">
-                    <small class="fa fa-map-marker-alt text-primary me-2"></small>
-                    <small>San Román Juliaca, Puno, Perú</small>
-                </div>
-                <div class="h-100 d-inline-flex align-items-center">
-                    <small class="far fa-clock text-primary me-2"></small>
-                    <small>Lun - Vie : 09:00 AM - 06:00 PM</small>
-                </div>
+    <!-- Navbar / Topbar -->
+    <nav class="navbar navbar-expand fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="img/logo.png" alt="SRAE Logo">
+                <span>SRAE</span>
+            </a>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#hero">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#about">Nosotros</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#services">Servicios</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#contact">Contacto</a>
+                </li>
+            </ul>
+            <a href="https://wa.me/51986366440?text=Hola%20SRAE%2C%20quiero%20una%20cotizaci%C3%B3n" target="_blank" class="btn btn-accent btn-cotizar">Cotiza con Nosotros</a>
+            <div class="theme-toggle">
+                <button id="themeSwitch" class="theme-btn" aria-label="Cambiar tema">
+                    <i class="fas fa-sun"></i>
+                    <i class="fas fa-moon"></i>
+                </button>
             </div>
-            <div class="col-lg-5 px-5 text-end">
-                <div class="h-100 d-inline-flex align-items-center me-4">
-                    <small class="fa fa-phone-alt text-primary me-2"></small>
-                    <!-- Resaltar número y agregar enlace de WhatsApp -->
-                    <small class="fw-bold text-light fs-5">+51 986 366 440</small>
-                    <a href="https://wa.me/51986366440" target="_blank"
-                        class="btn btn-square btn-link rounded-0 border-0 border-end border-secondary ms-2">
-                        <i class="fab fa-whatsapp text-success"></i>
-                    </a>
-                </div>
-                <div class="h-100 d-inline-flex align-items-center mx-n2">
-                    <a class="btn btn-square btn-link rounded-0 border-0 border-end border-secondary"
-                        href="https://wa.me/51986366440" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                    <a class="btn btn-square btn-link rounded-0 border-0 border-end border-secondary"
-                        href="https://wa.me/51986366440" target="_blank"><i class="fab fa-twitter"></i></a>
-                    <a class="btn btn-square btn-link rounded-0 border-0 border-end border-secondary"
-                        href="https://wa.me/51986366440" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                    <a class="btn btn-square btn-link rounded-0" href="https://wa.me/51986366440" target="_blank"><i
-                            class="fab fa-instagram"></i></a>
-                </div>
-                <div class="h-100 d-inline-flex align-items-center ms-3">
-                    <a class="btn btn-sm btn-outline-primary px-3 text-white border-white" href="login.html">
-                        <i class="fa fa-user me-2"></i>Ingresar
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Topbar End -->
-
-
-
-    <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0">
-        <a href="index.html" class="navbar-brand d-flex align-items-center border-end px-4 px-lg-5">
-            <h2 class="m-0 text-primary">Seer</h2>
-        </a>
-        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="index.html" class="nav-item nav-link active">Inicio</a>
-                <a href="about.html" class="nav-item nav-link">Nosotros</a>
-                <a href="service.html" class="nav-item nav-link">Servicios</a>
-                <a href="contact.html" class="nav-item nav-link">Contacto</a>
-            </div>
-            <a href="https://wa.me/51986366440"
-                class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">Solicitar un Presupuesto<i
-                    class="fa fa-arrow-right ms-3"></i></a>
         </div>
     </nav>
-    <!-- Navbar End -->
 
-
-
-
-
-    <!-- Carousel Start -->
-    <div class="container-fluid p-0 pb-5 wow fadeIn" data-wow-delay="0.1s">
-        <div class="owl-carousel header-carousel position-relative">
-
-            <!-- Item 1 -->
-            <div class="owl-carousel-item position-relative" data-dot="<img src='img/panel1.jpg'>">
-                <img class="img-fluid" src="img/panel1.jpg" alt="">
-                <div class="owl-carousel-inner">
-                    <div class="container">
-                        <div class="row justify-content-start">
-                            <div class="col-12 col-lg-8 p-4"
-                                style="background: rgba(0, 0, 0, 0.39); border-radius: 10px;">
-                                <h1 class="text-white fw-bold fs-2 animated slideInDown">
-                                    Innovación en Energía Renovable
-                                </h1>
-                                <p class="fs-5 fw-medium text-white mb-4 pb-3">
-                                    Soluciones solares de alta calidad con un enfoque cercano y profesional.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Item 2 -->
-            <div class="owl-carousel-item position-relative" data-dot="<img src='img/panel2.jpg'>">
-                <img class="img-fluid" src="img/panel2.jpg" alt="">
-                <div class="owl-carousel-inner">
-                    <div class="container">
-                        <div class="row justify-content-start">
-                            <div class="col-12 col-lg-8 p-4"
-                                style="background: rgba(0, 0, 0, 0.39); border-radius: 10px;">
-                                <h1 class="display-4 text-white animated slideInDown">
-                                    Innovadores en Energía Solar y Renovable
-                                </h1>
-                                <p class="fs-6 fw-medium text-white mb-4 pb-3">
-                                    Ofrecemos soluciones sostenibles con tecnología de punta.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Item 3 -->
-            <div class="owl-carousel-item position-relative" data-dot="<img src='img/panel3.jpeg'>">
-                <img class="img-fluid" src="img/panel3.jpeg" alt="">
-                <div class="owl-carousel-inner">
-                    <div class="container">
-                        <div class="row justify-content-start">
-                            <div class="col-12 col-lg-8 p-4"
-                                style="background: rgba(0, 0, 0, 0.39); border-radius: 10px;">
-                                <h1 class="display-4 text-white animated slideInDown">
-                                    Transformando el Futuro Energético
-                                </h1>
-                                <p class="fs-6 fw-medium text-white mb-4 pb-3">
-                                    Descubre cómo nuestra innovación impulsa la sostenibilidad.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-    <!-- Carousel End -->
-
-
-
-
-    <!-- Inicio de Características -->
-    <div class="container-xxl py-5">
+    <!-- Hero Video -->
+    <div id="hero" class="hero-video-section">
+        <video autoplay muted loop playsinline class="hero-video" poster="img/panel1.jpg">
+            <source src="video/9592506-hd_1920_1080_30fps.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-sun-decor"></div>
         <div class="container">
-            <div class="row g-5">
-                <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.1s">
-                    <div class="d-flex align-items-center mb-4">
-                        <div class="btn-lg-square bg-primary rounded-circle me-3">
-                            <i class="fa fa-users text-white"></i>
-                        </div>
-                        <h1 class="mb-0" data-toggle="counter-up">200</h1>
+            <div class="hero-content">
+                <div class="hero-brand-row">
+                    <img src="img/logo.png" alt="SRAE" class="hero-logo">
+                    <div class="hero-brand-text">
+                        <span class="hero-badge">Innovación en Energía Renovable</span>
+                        <h1>Transformando el<br>Futuro Energético</h1>
                     </div>
-                    <h5 class="mb-3">Clientes Satisfechos</h5>
-                    <span>Estamos orgullosos de servir con calidad y dedicación a cada cliente.</span>
                 </div>
-                <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.3s">
-                    <div class="d-flex align-items-center mb-4">
-                        <div class="btn-lg-square bg-primary rounded-circle me-3">
-                            <i class="fa fa-check text-white"></i>
-                        </div>
-                        <h1 class="mb-0" data-toggle="counter-up">20</h1>
-                    </div>
-                    <h5 class="mb-3">Proyectos Completados</h5>
-                    <span>Trabajamos en proyectos personalizados para cumplir tus expectativas.</span>
-                </div>
-                <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.5s">
-                    <div class="d-flex align-items-center mb-4">
-                        <div class="btn-lg-square bg-primary rounded-circle me-3">
-                            <i class="fa fa-calendar-alt text-white"></i>
-                        </div>
-                        <h1 class="mb-0" data-toggle="counter-up">5</h1>
-                    </div>
-                    <h5 class="mb-3">Años de Experiencia</h5>
-                    <span>Brindando soluciones confiables y eficientes en energía renovable.</span>
-                </div>
-                <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.7s">
-                    <div class="d-flex align-items-center mb-4">
-                        <div class="btn-lg-square bg-primary rounded-circle me-3">
-                            <i class="fa fa-users-cog text-white"></i>
-                        </div>
-                        <h1 class="mb-0" data-toggle="counter-up">10</h1>
-                    </div>
-                    <h5 class="mb-3">Trabajadores Expertos</h5>
-                    <span>Un equipo dedicado a brindar soluciones energéticas de calidad.</span>
+                <p>Somos pioneros en soluciones de energía solar. Instalamos paneles solares residenciales y empresariales para un mañana más sostenible.</p>
+                <div class="btn-group-hero">
+                    <a href="#services" class="btn btn-primary btn-lg">Nuestros Servicios</a>
+                    <a href="https://wa.me/51986366440?text=Hola%20SRAE%2C%20quiero%20m%C3%A1s%20informaci%C3%B3n" target="_blank" class="btn btn-outline-primary btn-lg">
+                        <i class="fab fa-whatsapp me-2"></i>Consultar Ahora
+                    </a>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Fin de Características -->
-
-
-
-
-
-
-
-
-
-
-
-    <!-- Inicio Sobre Nosotros -->
-    <div class="container-fluid bg-light overflow-hidden my-5 px-lg-0">
-        <div class="container about px-lg-0">
-            <div class="row g-0 mx-lg-0">
-                <div class="col-lg-6 ps-lg-0 wow fadeIn" data-wow-delay="0.1s" style="min-height: 550px;">
-                    <div class="position-relative h-100">
-                        <img class="position-absolute img-fluid w-100 h-100" src="img/about1.PNG"
-                            style="object-fit: cover;" alt="Sobre nosotros">
-                    </div>
-                </div>
-                <div class="col-lg-6 about-text py-5 wow fadeIn" data-wow-delay="0.5s">
-                    <div class="p-lg-5 pe-lg-0">
-                        <h6 class="text-primary">Sobre Nosotros</h6>
-                        <h1 class="mb-4">Más de 5 años de experiencia en la industria de energía renovable</h1>
-                        <p>Nos dedicamos a ofrecer soluciones energéticas sostenibles y de calidad. Nuestro compromiso
-                            es contribuir al cuidado del medio ambiente y garantizar la satisfacción de nuestros
-                            clientes con proyectos innovadores y personalizados.</p>
-                        <p><i class="fa fa-check-circle text-primary me-3"></i>Soluciones personalizadas para cada
-                            cliente</p>
-                        <p><i class="fa fa-check-circle text-primary me-3"></i>Compromiso con el medio ambiente</p>
-                        <p><i class="fa fa-check-circle text-primary me-3"></i>Equipo experto y dedicado</p>
-
-                    </div>
-                </div>
+        <div class="scroll-indicator">
+            <span class="scroll-text">Descubre más</span>
+            <div class="scroll-arrow">
+                <i class="fas fa-chevron-down"></i>
             </div>
         </div>
     </div>
-    <!-- Fin Sobre Nosotros -->
 
-
-
-    <div class="container-xxl py-5">
+    <!-- Services Highlights -->
+    <div class="services-section section-padding">
         <div class="container">
-            <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
-                <h6 class="text-primary">Nuestros Servicios</h6>
-                <h1 class="mb-4">Somos Pioneros en el Mundo de la Energía Renovable</h1>
+            <div class="section-title wow fadeInUp">
+                <span class="subtitle">Nuestro Enfoque</span>
+                <h2>Soluciones Energéticas <span class="text-gradient">Inteligentes</span></h2>
+                <p>Ofrecemos tecnología de vanguardia para maximizar tu ahorro energético con responsabilidad ambiental.</p>
             </div>
             <div class="row g-4">
-                <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="service-item rounded overflow-hidden">
-                        <img class="img-fluid" src="img/solar.jpg" alt="Paneles Solares">
-                        <div class="position-relative p-4 pt-0">
-                            <div class="service-icon">
-                                <i class="fa fa-solar-panel fa-3x"></i>
-                            </div>
-                            <h4 class="mb-3">Paneles Solares</h4>
-                            <p>Soluciones innovadoras para aprovechar la energía del sol y reducir el impacto ambiental.
-                            </p>
+                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="service-card">
+                        <div class="icon-box">
+                            <i class="fas fa-solar-panel"></i>
                         </div>
+                        <h4>Paneles Solares</h4>
+                        <p>Alta eficiencia en conversión de energía solar. Reducción garantizada en tu factura eléctrica.</p>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="service-item rounded overflow-hidden">
-                        <img class="img-fluid" src="img/offgrid.PNG" alt="Sistemas Off-grid">
-                        <div class="position-relative p-4 pt-0">
-                            <div class="service-icon">
-                                <i class="fa fa-wind fa-3x"></i>
-                            </div>
-                            <h4 class="mb-3">Sistemas Off-Grid</h4>
-                            <p>Un sistema Off-Grid es un sistema de energía solar completamente independiente de la red
-                                eléctrica, generando y almacenando su propia electricidad.</p>
-                            <p><strong>¿Cuándo se instala un sistema Off-Grid?</strong></p>
-                            <p><i class="fa fa-check-circle text-primary me-3"></i>Zonas rurales o aisladas</p>
-                            <p><i class="fa fa-check-circle text-primary me-3"></i>Refugios y cabañas remotas</p>
-                            <p><i class="fa fa-check-circle text-primary me-3"></i>Proyectos agrícolas o industriales
-                            </p>
-                            <p><i class="fa fa-check-circle text-primary me-3"></i>Sistemas de respaldo</p>
-                            <p><i class="fa fa-check-circle text-primary me-3"></i>Autonomía energética</p>
+                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                    <div class="service-card">
+                        <div class="icon-box">
+                            <i class="fas fa-battery-full"></i>
                         </div>
+                        <h4>Sistemas Off-Grid</h4>
+                        <p>Independencia total de la red eléctrica. Ideal para zonas rurales y proyectos remotos.</p>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="service-item rounded overflow-hidden">
-                        <img class="img-fluid" src="img/ongrid.PNG" alt="Sistemas On-grid">
-                        <div class="position-relative p-4 pt-0">
-                            <div class="service-icon">
-                                <i class="fa fa-lightbulb fa-3x"></i>
-                            </div>
-                            <h4 class="mb-3">Sistemas On-Grid</h4>
-                            <p>Un sistema On-Grid es un sistema de energía solar conectado a la red eléctrica.</p>
-                            <p><strong>¿Cuándo se instala un sistema On-Grid?</strong></p>
-                            <p><i class="fa fa-check-circle text-primary me-3"></i>Hogares y negocios en zonas urbanas
-                            </p>
-                            <p><i class="fa fa-check-circle text-primary me-3"></i>Industrias y comercios</p>
-                            <p><i class="fa fa-check-circle text-primary me-3"></i>Proyectos de generación distribuida
-                            </p>
-                            <p><i class="fa fa-check-circle text-primary me-3"></i>Zonas con suministro eléctrico
-                                estable</p>
-                            <p><i class="fa fa-check-circle text-primary me-3"></i>Alternativa a generadores</p>
+                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                    <div class="service-card">
+                        <div class="icon-box">
+                            <i class="fas fa-plug"></i>
                         </div>
+                        <h4>Sistemas On-Grid</h4>
+                        <p>Conectado a la red eléctrica. Genera tu propia energía y reduce costos significativamente.</p>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="service-item rounded overflow-hidden">
-                        <img class="img-fluid" src="img/bonbeo.PNG" alt="Sistemas de Bombeo Solar">
-                        <div class="position-relative p-4 pt-0">
-                            <div class="service-icon">
-                                <i class="fa fa-solar-panel fa-3x"></i>
-                            </div>
-                            <h4 class="mb-3">Sistemas de Bombeo Solar</h4>
-                            <p>Sistema diseñado para extraer y mover agua usando energía solar.</p>
-                            <p><strong>¿Cuándo se instala un sistema de bombeo solar?</strong></p>
-                            <p><i class="fa fa-check-circle text-primary me-3"></i>Riego agrícola</p>
-                            <p><i class="fa fa-check-circle text-primary me-3"></i>Abastecimiento de agua en zonas
-                                rurales</p>
-                            <p><i class="fa fa-check-circle text-primary me-3"></i>Ganadería</p>
-                            <p><i class="fa fa-check-circle text-primary me-3"></i>Pozos profundos o fuentes de agua
-                                remotas</p>
-                            <p><i class="fa fa-check-circle text-primary me-3"></i>Sistemas de almacenamiento de agua
-                            </p>
-                            <p><strong>Beneficios:</strong> Reducción de costos y suministro autónomo.</p>
+                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.7s">
+                    <div class="service-card">
+                        <div class="icon-box">
+                            <i class="fas fa-water"></i>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="service-item rounded overflow-hidden">
-                        <img class="img-fluid" src="img/img-600x400-2.jpg" alt="Turbinas Eólicas">
-                        <div class="position-relative p-4 pt-0">
-                            <div class="service-icon">
-                                <i class="fa fa-wind fa-3x"></i>
-                            </div>
-                            <h4 class="mb-3">Sistemas de Generación Eólica</h4>
-                            <p>Un sistema de energía eólica convierte la energía del viento en electricidad mediante un
-                                aerogenerador. Este sistema puede ser On-Grid (conectado a la red) o Off-Grid
-                                (independiente, con baterías).</p>
-                            <p><strong>¿Cuándo se instala un sistema eólico?</strong></p>
-                            <p><i class="fa fa-check-circle text-primary me-3"></i>Zonas con viento constante</p>
-                            <p><i class="fa fa-check-circle text-primary me-3"></i>Campos y zonas rurales</p>
-                            <p><i class="fa fa-check-circle text-primary me-3"></i>Industrias o negocios</p>
-                            <p><i class="fa fa-check-circle text-primary me-3"></i>Autonomía energética</p>
-                            <h4 class="mb-3">Sistemas Híbridos (Solar + Eólico)</h4>
-                            <p>Un sistema híbrido combina energía solar y eólica para maximizar la generación eléctrica,
-                                asegurando suministro en diferentes condiciones climáticas.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="service-item rounded overflow-hidden">
-                        <img class="img-fluid" src="img/terma.jpg" alt="Sistemas Híbridos">
-                        <div class="position-relative p-4 pt-0">
-                            <div class="service-icon">
-                                <i class="fa fa-lightbulb fa-3x"></i>
-                            </div>
-                            <h4 class="mb-3">Termas Solares</h4>
-                            <p>Aprovecha el poder del sol con nuestra terma solar de alta eficiencia, diseñada para
-                                ofrecer agua caliente las 24 horas sin depender de electricidad o gas.</p>
-                            <p><strong>Características:</strong></p>
-                            <p><i class="fa fa-check-circle text-primary me-3"></i>Alta capacidad: Modelos de 100L,
-                                120L, 150L, 200L, 300L, 400L y 500L.</p>
-                            <p><i class="fa fa-check-circle text-primary me-3"></i>Ahorro energético: Reduce hasta un
-                                80% en costos de agua caliente.</p>
-                            <p><i class="fa fa-check-circle text-primary me-3"></i>Máximo rendimiento: Tubos de vacío y
-                                aislación térmica para conservar el calor por más tiempo.</p>
-                            <p><i class="fa fa-check-circle text-primary me-3"></i>Ecológica y sostenible: Disfruta de
-                                confort sin impacto ambiental.</p>
-                            <p><i class="fa fa-check-circle text-primary me-3"></i>Fácil instalación y mantenimiento
-                                mínimo.</p>
-                        </div>
+                        <h4>Termas Solares</h4>
+                        <p>Agua caliente 24/7 sin electricidad ni gas. Ahorra hasta 80% en costos de agua caliente.</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-
-
-
-
-
-    <!-- Inicio de Características -->
-    <div class="container-fluid bg-light overflow-hidden my-5 px-lg-0">
-        <div class="container feature px-lg-0">
-            <div class="row g-0 mx-lg-0">
-                <div class="col-lg-6 feature-text py-5 wow fadeIn" data-wow-delay="0.1s">
-                    <div class="p-lg-5 ps-lg-0">
-                        <h6 class="text-primary">¿Por qué elegirnos?</h6>
-                        <h1 class="mb-4">Sistemas Solares Completos para Empresas y Residencias</h1>
-                        <p class="mb-4 pb-2">En Seer, nos dedicamos a transformar el futuro energético de nuestra
-                            región. Utilizamos tecnología de vanguardia para garantizar que tu inversión en energía
-                            renovable sea eficiente, duradera y rentable desde el primer día.</p>
-                        <div class="row g-4">
-                            <div class="col-6">
-                                <div class="d-flex align-items-center">
-                                    <div class="btn-lg-square bg-primary rounded-circle">
-                                        <i class="fa fa-check text-white"></i>
-                                    </div>
-                                    <div class="ms-4">
-                                        <p class="mb-0">Servicios</p>
-                                        <h5 class="mb-0">De Calidad</h5>
-                                    </div>
-                                </div>
+    <!-- About Section -->
+    <div id="about" class="about-section section-padding">
+        <div class="container">
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-6 wow fadeInLeft">
+                    <div class="about-img-wrap">
+                        <div class="about-img-grid">
+                            <div class="about-img-main">
+                                <img src="img/realperson.PNG" alt="Nuestro equipo SRAE">
                             </div>
-                            <div class="col-6">
-                                <div class="d-flex align-items-center">
-                                    <div class="btn-lg-square bg-primary rounded-circle">
-                                        <i class="fa fa-user-check text-white"></i>
-                                    </div>
-                                    <div class="ms-4">
-                                        <p class="mb-0">Expertosos</p>
-                                        <h5 class="mb-0">Profesionales</h5>
-                                    </div>
-                                </div>
+                            <div class="about-img-secondary">
+                                <img src="img/about.jpg" alt="Sobre SRAE">
                             </div>
-                            <div class="col-6">
-                                <div class="d-flex align-items-center">
-                                    <div class="btn-lg-square bg-primary rounded-circle">
-                                        <i class="fa fa-drafting-compass text-white"></i>
-                                    </div>
-                                    <div class="ms-4">
-                                        <p class="mb-0">Consulta</p>
-                                        <h5 class="mb-0">Gratis</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="d-flex align-items-center">
-                                    <div class="btn-lg-square bg-primary rounded-circle">
-                                        <i class="fa fa-headphones text-white"></i>
-                                    </div>
-                                    <div class="ms-4">
-                                        <p class="mb-0">Atención</p>
-                                        <h5 class="mb-0">Al Cliente</h5>
-                                    </div>
-                                </div>
-                            </div>
+                        </div>
+                        <div class="experience-badge">
+                            <h3>5+</h3>
+                            <span>Años de Experiencia</span>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 pe-lg-0 wow fadeIn" data-wow-delay="0.5s" style="min-height: 400px;">
-                    <div class="position-relative h-100">
-                        <img class="position-absolute img-fluid w-100 h-100" src="img/feature.jpg"
-                            style="object-fit: cover;" alt="">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Fin de Características -->
-
-
-
-
-
-    <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-body footer mt-5 pt-5 wow fadeIn" data-wow-delay="0.1s">
-        <div class="container py-5">
-            <div class="row g-5">
-                <div class="col-lg-3 col-md-6">
-                    <h5 class="text-white mb-4">Dirección</h5>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>San Román Juliaca, Puno, Perú</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+51 986 366 440</p>
-                    <!--<p class="mb-2"><i class="fa fa-envelope me-3"></i>contacto@seer.pe</p>-->
-                    <div class="d-flex pt-2">
-                        <a class="btn btn-square btn-outline-light btn-social" href="https://wa.me/51986366440"
-                            target="_blank"><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-square btn-outline-light btn-social" href="https://wa.me/51986366440"
-                            target="_blank"><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-square btn-outline-light btn-social" href="https://wa.me/51986366440"
-                            target="_blank"><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-square btn-outline-light btn-social" href="https://wa.me/51986366440"
-                            target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h5 class="text-white mb-4">Enlaces Rápidos</h5>
-                    <a class="btn btn-link" href="https://wa.me/51986366440" target="_blank">Sobre Nosotros</a>
-                    <a class="btn btn-link" href="https://wa.me/51986366440" target="_blank">Contáctanos</a>
-                    <a class="btn btn-link" href="https://wa.me/51986366440" target="_blank">Nuestros Servicios</a>
-                    <a class="btn btn-link" href="https://wa.me/51986366440" target="_blank">Términos y Condiciones</a>
-                    <a class="btn btn-link" href="https://wa.me/51986366440" target="_blank">Soporte</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h5 class="text-white mb-4">Galería de Proyectos</h5>
-                    <div class="row g-2">
-                        <div class="col-4">
-                            <img class="img-fluid rounded" src="img/gallery-1.jpg" alt="">
-                        </div>
-                        <div class="col-4">
-                            <img class="img-fluid rounded" src="img/gallery-2.jpg" alt="">
-                        </div>
-                        <div class="col-4">
-                            <img class="img-fluid rounded" src="img/gallery-3.jpg" alt="">
-                        </div>
-                        <div class="col-4">
-                            <img class="img-fluid rounded" src="img/gallery-4.jpg" alt="">
-                        </div>
-                        <div class="col-4">
-                            <img class="img-fluid rounded" src="img/gallery-5.jpg" alt="">
-                        </div>
-                        <div class="col-4">
-                            <img class="img-fluid rounded" src="img/gallery-6.jpg" alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h5 class="text-white mb-4">Contacto Rápido</h5>
-                    <p>¿Tienes dudas? Escríbenos por WhatsApp y te responderemos pronto.</p>
-                    <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <input class="form-control border-0 w-100 py-3 ps-4 pe-5" type="text" placeholder="Tu mensaje">
-                        <a href="https://wa.me/51986366440" target="_blank"
-                            class="btn btn-success py-2 position-absolute top-0 end-0 mt-2 me-2">
-                            <i class="fab fa-whatsapp"></i> Enviar
+                <div class="col-lg-6 wow fadeInRight">
+                    <div class="about-content">
+                        <span class="about-badge">¿Quiénes Somos?</span>
+                        <h2>Pioneros en Energía <span class="text-gradient">Renovable</span></h2>
+                        <p>En <strong>SRAE</strong> nos dedicamos a ofrecer soluciones energéticas sostenibles y de calidad. Contribuimos al cuidado del medio ambiente y garantizamos la satisfacción de nuestros clientes con proyectos innovadores y personalizados.</p>
+                        <ul class="about-list">
+                            <li><i class="fas fa-check-circle"></i> Soluciones personalizadas para cada cliente</li>
+                            <li><i class="fas fa-check-circle"></i> Compromiso con el medio ambiente</li>
+                            <li><i class="fas fa-check-circle"></i> Equipo experto y dedicado</li>
+                            <li><i class="fas fa-check-circle"></i> Tecnología de vanguardia</li>
+                            <li><i class="fas fa-check-circle"></i> Atención al cliente excepcional</li>
+                        </ul>
+                        <a href="https://wa.me/51986366440?text=Hola%20SRAE%2C%20quiero%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20servicios" target="_blank" class="btn btn-primary">
+                            <i class="fab fa-whatsapp me-2"></i>Conversemos
                         </a>
                     </div>
+                    <div class="row stats-row g-4">
+                        <div class="col-3 col-md-3">
+                            <div class="stat-item">
+                                <h3 class="counter">200</h3>
+                                <p>Clientes Satisfechos</p>
+                            </div>
+                        </div>
+                        <div class="col-3 col-md-3">
+                            <div class="stat-item">
+                                <h3 class="counter">20</h3>
+                                <p>Proyectos Completados</p>
+                            </div>
+                        </div>
+                        <div class="col-3 col-md-3">
+                            <div class="stat-item">
+                                <h3 class="counter">5</h3>
+                                <p>Años de Experiencia</p>
+                            </div>
+                        </div>
+                        <div class="col-3 col-md-3">
+                            <div class="stat-item">
+                                <h3 class="counter">10</h3>
+                                <p>Expertos</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Services Detail -->
+    <div id="services" class="services-detail section-padding">
         <div class="container">
-            <div class="copyright">
-                <div class="row">
-                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; <a href="#">seer.it.com</a>, Todos los derechos reservados.
+            <div class="section-title wow fadeInUp">
+                <span class="subtitle">Nuestros Servicios</span>
+                <h2>Soluciones Integrales en <span class="text-gradient">Energía Solar</span></h2>
+                <p>Desde paneles solares hasta sistemas híbridos, cubrimos todas tus necesidades energéticas.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="service-detail-card">
+                        <div class="service-img">
+                            <img src="img/solar.jpg" alt="Paneles Solares">
+                            <div class="service-overlay"></div>
+                        </div>
+                        <div class="service-body">
+                            <div class="service-icon"><i class="fas fa-solar-panel"></i></div>
+                            <h4>Paneles Solares</h4>
+                            <p>Soluciones para aprovechar la energía del sol y reducir el impacto ambiental. Ideales para hogares y empresas que buscan independencia energética.</p>
+                            <a href="https://wa.me/51986366440?text=Hola%20SRAE%2C%20quiero%20informaci%C3%B3n%20sobre%20paneles%20solares" target="_blank" class="btn btn-sm btn-outline-primary">Consultar <i class="fas fa-arrow-right ms-2"></i></a>
+                        </div>
                     </div>
-                    <div class="col-md-6 text-center text-md-end">
-                        Diseñado por <a href="https://htmlcodex.com">@seer.it</a>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                    <div class="service-detail-card">
+                        <div class="service-img">
+                            <img src="img/offgrid.PNG" alt="Sistemas Off-Grid">
+                            <div class="service-overlay"></div>
+                        </div>
+                        <div class="service-body">
+                            <div class="service-icon"><i class="fas fa-battery-full"></i></div>
+                            <h4>Sistemas Off-Grid</h4>
+                            <p>Independiente de la red eléctrica. Ideal para zonas rurales, refugios remotos, proyectos agrícolas y sistemas de respaldo con autonomía total.</p>
+                            <a href="https://wa.me/51986366440?text=Hola%20SRAE%2C%20quiero%20informaci%C3%B3n%20sobre%20sistemas%20off-grid" target="_blank" class="btn btn-sm btn-outline-primary">Consultar <i class="fas fa-arrow-right ms-2"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                    <div class="service-detail-card">
+                        <div class="service-img">
+                            <img src="img/ongrid.PNG" alt="Sistemas On-Grid">
+                            <div class="service-overlay"></div>
+                        </div>
+                        <div class="service-body">
+                            <div class="service-icon"><i class="fas fa-plug"></i></div>
+                            <h4>Sistemas On-Grid</h4>
+                            <p>Conectado a la red eléctrica. Perfecto para hogares y negocios urbanos que buscan reducir su factura de luz con generación distribuida.</p>
+                            <a href="https://wa.me/51986366440?text=Hola%20SRAE%2C%20quiero%20informaci%C3%B3n%20sobre%20sistemas%20on-grid" target="_blank" class="btn btn-sm btn-outline-primary">Consultar <i class="fas fa-arrow-right ms-2"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="service-detail-card">
+                        <div class="service-img">
+                            <img src="img/bonbeo.PNG" alt="Bombeo Solar">
+                            <div class="service-overlay"></div>
+                        </div>
+                        <div class="service-body">
+                            <div class="service-icon"><i class="fas fa-tint"></i></div>
+                            <h4>Sistemas de Bombeo Solar</h4>
+                            <p>Extrae y mueve agua usando energía solar. Ideal para riego agrícola, abastecimiento rural, ganadería y pozos profundos.</p>
+                            <a href="https://wa.me/51986366440?text=Hola%20SRAE%2C%20quiero%20informaci%C3%B3n%20sobre%20bombeo%20solar" target="_blank" class="btn btn-sm btn-outline-primary">Consultar <i class="fas fa-arrow-right ms-2"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                    <div class="service-detail-card">
+                        <div class="service-img">
+                            <img src="img/feature.jpg" alt="Energía Eólica e Híbrida">
+                            <div class="service-overlay"></div>
+                        </div>
+                        <div class="service-body">
+                            <div class="service-icon"><i class="fas fa-wind"></i></div>
+                            <h4>Sistemas Eólicos e Híbridos</h4>
+                            <p>Generación eólica y sistemas híbridos solar+eólico. Maximiza la producción energética en diferentes condiciones climáticas.</p>
+                            <a href="https://wa.me/51986366440?text=Hola%20SRAE%2C%20quiero%20informaci%C3%B3n%20sobre%20sistemas%20e%C3%B3licos" target="_blank" class="btn btn-sm btn-outline-primary">Consultar <i class="fas fa-arrow-right ms-2"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                    <div class="service-detail-card">
+                        <div class="service-img">
+                            <img src="img/terma.jpg" alt="Termas Solares">
+                            <div class="service-overlay"></div>
+                        </div>
+                        <div class="service-body">
+                            <div class="service-icon"><i class="fas fa-hot-tub"></i></div>
+                            <h4>Termas Solares</h4>
+                            <p>Agua caliente 24/7 sin electricidad ni gas. Modelos de 100L a 500L con tubos de vacío y aislación térmica. Ahorro de hasta 80%.</p>
+                            <a href="https://wa.me/51986366440?text=Hola%20SRAE%2C%20quiero%20informaci%C3%B3n%20sobre%20termas%20solares" target="_blank" class="btn btn-sm btn-outline-primary">Consultar <i class="fas fa-arrow-right ms-2"></i></a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Footer End -->
 
-
-    <div class="fixed-bottom d-flex justify-content-end p-3"> <!-- Ajusté el padding aquí -->
-        <!-- Botón WhatsApp con texto e ícono -->
-        <a href="https://wa.me/51986366440" target="_blank"
-            class="btn btn-lg btn-success btn-lg-square rounded-circle me-3 whatsapp-btn d-flex align-items-center">
-            <div class="whatsapp-icon-container">
-                <i class="fab fa-whatsapp"></i>
+    <!-- Benefits / Why Choose Us -->
+    <div class="benefits-section section-padding">
+        <div class="container">
+            <div class="section-title wow fadeInUp">
+                <span class="subtitle">¿Por Qué Elegirnos?</span>
+                <h2>Razones para Confiar en <span class="text-gradient">SRAE</span></h2>
+                <p>Calidad, experiencia y compromiso nos respaldan como tu mejor opción en energía solar.</p>
             </div>
-        </a>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="benefit-card">
+                        <div class="benefit-icon"><i class="fas fa-medal"></i></div>
+                        <div>
+                            <h5>Servicios de Calidad</h5>
+                            <p>Utilizamos materiales y equipos de primer nivel. Cada instalación cumple con los más altos estándares de calidad.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.2s">
+                    <div class="benefit-card">
+                        <div class="benefit-icon"><i class="fas fa-user-tie"></i></div>
+                        <div>
+                            <h5>Expertos Profesionales</h5>
+                            <p>Nuestro equipo está conformado por ingenieros y técnicos especializados en energías renovables.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                    <div class="benefit-card">
+                        <div class="benefit-icon"><i class="fas fa-hand-holding-heart"></i></div>
+                        <div>
+                            <h5>Consulta Gratis</h5>
+                            <p>Te ofrecemos una asesoría inicial sin costo para evaluar tus necesidades y ofrecerte la mejor solución.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.4s">
+                    <div class="benefit-card">
+                        <div class="benefit-icon"><i class="fas fa-headset"></i></div>
+                        <div>
+                            <h5>Atención al Cliente</h5>
+                            <p>Soporte continuo y atención personalizada durante todo el proceso, desde la consulta hasta el mantenimiento.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                    <div class="benefit-card">
+                        <div class="benefit-icon"><i class="fas fa-microchip"></i></div>
+                        <div>
+                            <h5>Tecnología de Vanguardia</h5>
+                            <p>Trabajamos con la tecnología más avanzada del mercado para garantizar máxima eficiencia y durabilidad.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.6s">
+                    <div class="benefit-card">
+                        <div class="benefit-icon"><i class="fas fa-leaf"></i></div>
+                        <div>
+                            <h5>Compromiso Ambiental</h5>
+                            <p>Cada proyecto contribuye a reducir la huella de carbono. Apostamos por un futuro más limpio y sostenible.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <!-- CTA Section -->
+    <div class="cta-section section-padding text-center">
+        <div class="container">
+            <div class="wow fadeInUp">
+                <span class="subtitle" style="display:inline-block;font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:3px;color:var(--primary-light);margin-bottom:12px;">¿Listo para el Cambio?</span>
+                <h2>Empieza a Ahorrar con <span class="text-gradient">Energía Solar</span></h2>
+                <p>Descubre cuánto puedes ahorrar en tu factura de luz. Solicita una cotización personalizada y sin compromiso.</p>
+                <a href="https://wa.me/51986366440?text=Hola%20SRAE%2C%20quiero%20solicitar%20una%20cotizaci%C3%B3n%20personalizada" target="_blank" class="btn btn-accent btn-lg">
+                    <i class="fab fa-whatsapp me-2"></i>Solicitar Cotización Gratis
+                </a>
+            </div>
+        </div>
+    </div>
 
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Contact Section -->
+    <div id="contact" class="contact-section section-padding">
+        <div class="container">
+            <div class="section-title wow fadeInUp">
+                <span class="subtitle">Contacto</span>
+                <h2>Estamos Listos para <span class="text-gradient">Ayudarte</span></h2>
+                <p>Contáctanos por WhatsApp o llena el formulario y te responderemos a la brevedad.</p>
+            </div>
+            <div class="row g-5 align-items-stretch">
+                <div class="col-lg-5 wow fadeInLeft">
+                    <div class="contact-info-wrap">
+                        <div class="contact-info-card">
+                            <div class="contact-icon"><i class="fab fa-whatsapp"></i></div>
+                            <div class="contact-info-body">
+                                <h5>WhatsApp</h5>
+                                <p>Respuesta rápida y personalizada</p>
+                                <a href="https://wa.me/51986366440" target="_blank" class="btn btn-whatsapp w-100 mt-2">
+                                    <i class="fab fa-whatsapp me-2"></i>+51 986 366 440
+                                </a>
+                            </div>
+                        </div>
+                        <div class="contact-info-card">
+                            <div class="contact-icon"><i class="far fa-envelope"></i></div>
+                            <div class="contact-info-body">
+                                <h5>Email</h5>
+                                <p>Envíanos un correo</p>
+                                <a href="mailto:solucionesrenovables9@gmail.com">solucionesrenovables9@gmail.com</a>
+                            </div>
+                        </div>
+                        <div class="contact-info-card">
+                            <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                            <div class="contact-info-body">
+                                <h5>Ubicación</h5>
+                                <p>San Román Juliaca, Puno, Perú</p>
+                            </div>
+                        </div>
+                        <div class="contact-info-card">
+                            <div class="contact-icon"><i class="far fa-clock"></i></div>
+                            <div class="contact-info-body">
+                                <h5>Horario</h5>
+                                <p>Lun - Vie: 09:00 AM - 06:00 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7 wow fadeInRight">
+                    <div class="contact-form-wrap">
+                        <div class="form-header">
+                            <h4>Envíanos un <span class="text-gradient">Mensaje</span></h4>
+                            <p>Cuéntanos sobre tu proyecto y te contactaremos a la brevedad.</p>
+                        </div>
+                        <form>
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Nombre Completo</label>
+                                        <input type="text" class="form-control" placeholder="Ej: Juan Pérez" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Correo Electrónico</label>
+                                        <input type="email" class="form-control" placeholder="Ej: juan@email.com" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Teléfono</label>
+                                        <input type="tel" class="form-control" placeholder="Ej: +51 999 888 777" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Servicio de Interés</label>
+                                        <select class="form-control">
+                                            <option value="" disabled selected>Selecciona un servicio</option>
+                                            <option>Paneles Solares</option>
+                                            <option>Sistemas Off-Grid</option>
+                                            <option>Sistemas On-Grid</option>
+                                            <option>Bombeo Solar</option>
+                                            <option>Eólico / Híbrido</option>
+                                            <option>Termas Solares</option>
+                                            <option>Otro</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Mensaje</label>
+                                        <textarea class="form-control" placeholder="Cuéntanos sobre tu proyecto o consulta..." required></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                                        <i class="fab fa-whatsapp me-2"></i>Enviar Mensaje
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="form-footer">
+                            <i class="fas fa-shield-alt me-2"></i>
+                            <span>Tus datos están seguros. No compartimos información con terceros.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-4 py-5">
+                <div class="col-lg-4 col-md-6">
+                    <div class="footer-widget">
+                        <a class="navbar-brand mb-3 d-inline-block" href="#">
+                            <img src="img/logo.png" alt="SRAE" style="height:40px;">
+                            <span style="font-family:var(--font-heading);font-size:1.4rem;font-weight:800;background:var(--gradient-1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">SRAE</span>
+                        </a>
+                        <p>Somos una empresa especializada en energías renovables, instalación de paneles solares y soluciones energéticas sostenibles para hogares y empresas.</p>
+                        <div class="footer-social mt-3">
+                            <a href="https://wa.me/51986366440" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-youtube"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <div class="footer-widget">
+                        <h5>Enlaces</h5>
+                        <ul>
+                            <li><a href="#about">Sobre Nosotros</a></li>
+                            <li><a href="#services">Nuestros Servicios</a></li>
+                            <li><a href="#contact">Contacto</a></li>
+                            <li><a href="#">Términos y Condiciones</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="footer-widget">
+                        <h5>Contacto</h5>
+                        <div class="footer-contact-item">
+                            <i class="fab fa-whatsapp"></i>
+                            <span><a href="https://wa.me/51986366440" target="_blank">+51 986 366 440</a></span>
+                        </div>
+                        <div class="footer-contact-item">
+                            <i class="far fa-envelope"></i>
+                            <span><a href="mailto:solucionesrenovables9@gmail.com">solucionesrenovables9@gmail.com</a></span>
+                        </div>
+                        <div class="footer-contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>San Román Juliaca, Puno, Perú</span>
+                        </div>
+                        <div class="footer-contact-item">
+                            <i class="far fa-clock"></i>
+                            <span>Lun - Vie: 09:00 AM - 06:00 PM</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="footer-widget">
+                        <h5>Newsletter</h5>
+                        <p>Suscríbete para recibir novedades y consejos sobre energía solar.</p>
+                        <div class="newsletter-form">
+                            <div class="input-group">
+                                <input type="email" class="form-control" placeholder="tu@email.com">
+                                <button class="btn btn-primary" type="button">Suscribir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <p>&copy; 2025 <strong>SRAE</strong>. Todos los derechos reservados.</p>
+                    </div>
+                    <div class="col-md-4 text-md-end">
+                        <p>Diseñado por <a href="https://wa.me/51986366440" target="_blank">SRAE</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/51986366440?text=Hola%20SRAE%2C%20quiero%20informaci%C3%B3n%20sobre%20sus%20servicios" target="_blank" class="whatsapp-float">
+        <i class="fab fa-whatsapp"></i>
+        <span class="whatsapp-tooltip">¡Escríbenos!</span>
+    </a>
+
+    <!-- Back to Top -->
+    <a href="#" class="back-to-top"><i class="fas fa-arrow-up"></i></a>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="lib/wow/wow.min.js"></script>
     <script src="lib/easing/easing.min.js"></script>
     <script src="lib/waypoints/waypoints.min.js"></script>
-    <script src="lib/counterup/counterup.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="lib/isotope/isotope.pkgd.min.js"></script>
-    <script src="lib/lightbox/js/lightbox.min.js"></script>
-
-    <!-- Template Javascript -->
     <script src="js/main.js"></script>
 </body>
-
 </html>
