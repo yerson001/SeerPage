@@ -301,6 +301,7 @@ img {
 /* Navbar (topbar principal) */
 .navbar {
     background: linear-gradient(135deg, #047857 0%, #059669 50%, #10B981 100%) !important;
+    top: 0;
     padding: 0;
     border-bottom: none;
     transition: var(--transition);
